@@ -1,0 +1,11 @@
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.exe
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.deps.json
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.runtimeconfig.json
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.runtimeconfig.dev.json
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.dll
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\bin\Debug\netcoreapp3.1\Supernatural.pdb
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.csprojAssemblyReference.cache
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.AssemblyInfoInputs.cache
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.AssemblyInfo.cs
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.dll
+C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.pdb
