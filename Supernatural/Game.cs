@@ -9,6 +9,6 @@ namespace Supernatural
         public abstract void Play();
         public List<Player> _Players = new List<Player>();
         public List<Player> Players { get { return _Players; } set { value = _Players; } }
-        
+        public bool endProgram { get; set; }
     }
 }

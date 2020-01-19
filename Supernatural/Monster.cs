@@ -7,21 +7,30 @@ namespace Supernatural
     public class Monster
     {
         public Tile.Name Position { get; set; }
+        public enum Type
+        {
+            WereWolf,
+            Vampire
+        }
         public string Name { get; set; }
 
         public bool IsRevealed { get; set; }
         public bool IsActive { get; set; }
         public int Health { get; set; }
-        public int MaxHealth = 10;
+        public int MaxHealth { get; set; }
         public int CountDown { get; set; }
         public int MaxCountDown { get; set; }
         public int Speed { get; set; }
+        public List<Clue.Type> _MonsterClues = new List<Clue.Type>();
+        public List<Clue.Type> MonsterClues { get {return _MonsterClues; } set { value = _MonsterClues; } }
         public Monster()
         {
+            
+            
             this.Health = MaxHealth;
             this.CountDown = 3;
             this.MaxCountDown = 3;
-            this.Speed = 2;
+            
         }
         public void Move(List<Tile.Name> _list,List< Player> Players)
         {

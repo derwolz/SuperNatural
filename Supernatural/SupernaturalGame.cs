@@ -10,8 +10,14 @@ namespace Supernatural
         public override void Play()
         {
             Tile tile = new Tile();
-            GameMaster gm = new GameMaster();
+            
             Monster monster = new Monster();
+            MonsterFactory factory = new MonsterFactory();
+            Random random = new Random();
+            int rand = random.Next(1,2)-1;
+            Monster.Type mType = (Monster.Type)rand;
+            monster = factory.Factory(mType, Players);
+            GameMaster gm = new GameMaster(monster);
             Random r = new Random();
             monster.Position = (Tile.Name)(r.Next(9) + 1);
             monster.IsActive = true;
@@ -25,6 +31,7 @@ namespace Supernatural
                     string canAttack = "";
                     string canResearch = "";
                     string canInvestigate = "";
+                    string monsterName = "";
                     int cost = 1;
                     bool endTurn = false;
                     int query2 = 0;
@@ -37,11 +44,14 @@ namespace Supernatural
                         bool playercanAttack = player.CanAttack(monster.Position, tile.GetAdjacentPaths(player.Position));
                         bool playercanResearch = (player.Position == Tile.Name.Library || player.Position == Tile.Name.Motel || player.Position == Tile.Name.TrailerHome);
                         bool playercanInvestigate = (tile.GetPanic(player.Position) != Tile.Panic.Level_0);
+                        
 
                         if (playercanResearch)                          canResearch = "(R)esearch";
                         if (playercanAttack && monster.IsActive)        canAttack = "(A)ttack";
                         if (playercanInvestigate)                       canInvestigate = "(I)nvestigate";
-                        
+                        if (monster.IsRevealed) monsterName = "" + monster.Name + " is rampaging at the ";
+                        else monsterName = "It sounds like something may be";
+
                         Console.WriteLine("\n{0}'s turn (M)ove {1} {2} {3} (S)kip (U)se Card", player.Name, canInvestigate, canResearch, canAttack);
                         Console.WriteLine("{0} is located at {1}", player.Name, player.Position);
                         foreach (Clue clue in player.ClueHand)
@@ -50,7 +60,7 @@ namespace Supernatural
                         if (monster.IsActive)
                         {
                             Console.BackgroundColor = ConsoleColor.DarkBlue;
-                            Console.WriteLine("It sounds like something may be happening at {0}", monster.Position);
+                            Console.WriteLine("{0} happening at {1}", monsterName, monster.Position);
                             Console.BackgroundColor = ConsoleColor.Black;
                         }
                         string query = Console.ReadLine();
@@ -64,11 +74,15 @@ namespace Supernatural
                             case "a":
                                 if (playercanAttack && monster.IsActive)
                                 {
+                                    Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine("{0} Attacks the Figure, Damage Total {1}", player.Name,monster.MaxHealth-monster.Health);
+                                    Console.ResetColor();
                                     monster.Health -= 1;
                                     if (monster.Health < 0)
                                     {
+                                        Console.ForegroundColor = ConsoleColor.Green;
                                         Console.WriteLine("The Monster Falls");
+                                        Console.ResetColor();
                                         monster.IsActive = false;
                                     }
                                     player.DiscardCard();
@@ -77,7 +91,7 @@ namespace Supernatural
                                 break;
                             case "r":
                                 cost = 1;
-                                player.ResearchClue(cost);
+                                player.ResearchClue(cost, gm);
                                 break;
                             case "i":
                                 Console.WriteLine("{0} is at {1}", player.Position, tile.GetPanic(player.Position));
@@ -108,11 +122,14 @@ namespace Supernatural
                                     case Action.Type.Shotgun:
                                         if (WeaponAbilities.Shotgun(tile, player, monster))
                                         {
+                                            Console.ForegroundColor = ConsoleColor.Green;
                                             Console.WriteLine("{0} Takes a shot with the shotgun and strikes the figure Damage Total: {1}",player.Name,monster.MaxHealth-monster.Health);
+                                            Console.ResetColor();
                                             monster.Health -= 1;
                                             if (monster.Health < 0)
                                             {
                                                 Console.WriteLine("The Monster Falls");
+                                                
                                                 monster.IsActive = false;
                                             }
                                             player.DiscardCard(query4);
@@ -139,7 +156,7 @@ namespace Supernatural
                                     case Action.Type.doubleResearch:
                                         cost = 0;
                                         for (int i = 0; i < 2; i++)
-                                            player.ResearchClue(cost);
+                                            player.ResearchClue(cost, gm);
                                         player.DiscardCard(query4);
                                         break;
                                 }    
@@ -151,6 +168,31 @@ namespace Supernatural
                         }
                         if (player.ActionHand.Count == 0)
                             endTurn = true;
+                        gm.RevealMonster(monster);
+                        if (gm.CheckLoseCon(tile))
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine("{0} Has destroyed the City! You Have Failed!", monster.Name);
+                            Console.WriteLine("Press enter to exit");
+                            Console.ReadLine();
+                            endTurn = true;
+                            playing = true;
+                            endProgram = true;
+                            return;
+                        }
+                        if (gm.CheckWinCon(monster, gm.CheckLoseCon(tile)))
+                        {
+                            Console.BackgroundColor = ConsoleColor.Green;
+                            Console.WriteLine("You have slain the {0} and saved the City!", monster.Name);
+                            Console.WriteLine("Press enter to exit");
+                            Console.ReadLine();
+                            endTurn = true;
+                            playing = true;
+                            endProgram = true;
+                            return;
+                        }
+                            
+                        
                     }
                 }
                 //......................................................................Monster Turn.............................................................................//

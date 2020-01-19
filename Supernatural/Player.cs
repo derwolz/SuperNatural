@@ -81,7 +81,7 @@ namespace Supernatural
                 result = true;
             return result;
         }
-        public void ResearchClue(int cost)
+        public void ResearchClue(int cost, GameMaster gm)
         {
             Console.WriteLine("Which Clue do you wish to research?");
             int count = 1;
@@ -94,7 +94,14 @@ namespace Supernatural
             if (query2 == 0 || query2 > ClueHand.Count) return;
             if (query2 <= ClueHand.Count)
             {
-                Console.WriteLine("{0} Researched {1}.", Name, ClueHand[query2 - 1]);
+                string Isreal = "";
+                if (ClueHand[query2 - 1].IsReal) Isreal = "Was a Real Clue!";
+                else Isreal = "Was a fake!";
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("{0} Researched {1} {2}.", Name, ClueHand[query2 - 1].Name,Isreal);
+                Console.ResetColor();
+                if (ClueHand[query2-1].IsReal == true)
+                    gm.WinCon1.Add(ClueHand[query2 - 1]);
                 ClueHand.RemoveAt(query2 - 1);
                 if (cost > 0)
                     for (int i = 0; i < cost; i++)
@@ -113,35 +120,18 @@ namespace Supernatural
                 Console.Write("{0}) {1}\n", count + 1, item.ToString());
                 count += 1;
             }
-            Int32.TryParse(Console.ReadLine(), out int query2);
-            switch (query2)
+            if (Int32.TryParse(Console.ReadLine(), out int query2) && query2 > 0 && query2 < 5)
             {
-                case 1:
-                    Position = tempPath[0];
-                    Console.WriteLine("{0} moved to {1}", Name, Position);
-                    if (cost > 0)
-                        for (int i = 0; i < cost; i++)
-                            DiscardCard();
-                    break;
-                case 2:
-                    Position = tempPath[1];
-                    Console.WriteLine("{0} moved to {1}", Name, Position);
-                    if (cost > 0)
-                        for (int i = 0; i < cost; i++)
+                Position = tempPath[query2 - 1];
+                Console.WriteLine("{0} moved to {1}", Name, Position);
+                if (cost > 0)
+                    for (int i = 0; i < cost; i++)
                         DiscardCard();
-                    break;
-                case 3:
-                    if (tempPath.Count > 2)
-                        Position = tempPath[2];
-                    Console.WriteLine("{0} moved to {1}", Name, Position);
-                    if (cost > 0)
-                        for (int i = 0; i < cost; i++)
-                        DiscardCard();
-                    break;
-                default:
-                    Console.WriteLine("Not correct input.");
-                    break;
             }
+            else
+            { 
+                Console.WriteLine("Not correct input.");
+            } return;
         }
     }
 }

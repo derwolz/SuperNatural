@@ -6,17 +6,18 @@ namespace Supernatural
     {
         static void Main(string[] args)
         {
-            bool endProgram = false;
+            
+            Game game = new SupernaturalGame();
             Console.WriteLine("How Many Players? Max 4");
             Int32.TryParse(Console.ReadLine(), out int numquery);
             if (numquery == 0 || numquery > 4)
             {
                 Console.WriteLine("Number was out of range or non-number. Exiting");
-                endProgram = true;
+                game.endProgram = true;
             }
             else
             {
-                Game game = new SupernaturalGame();
+                
                 for (int i = 0; i < numquery; i++)
                 {
                     Player player = new Player();
@@ -25,9 +26,10 @@ namespace Supernatural
                     game.Players.Add(player);
                 }
 
+                game.endProgram = false;
                 try
                 {
-                    while (!endProgram)
+                    while (!game.endProgram)
                     {
                         game.Play();
                     }
@@ -44,11 +46,7 @@ namespace Supernatural
                     Console.ResetColor();
                     return;
                 }
-                catch (Exception)
-                {
-                    Console.WriteLine("Try listening to directions next time");
-                    return;
-                }
+                
             }
             
             

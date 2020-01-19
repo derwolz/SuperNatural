@@ -11,8 +11,10 @@ namespace Supernatural
             Claw, Blood,
             Hair, Goo,
             Arcane_Symbols, Bones,
-            Inhuman_Footprints, Cold_Air
+            Inhuman_Footprints, Cold_Air, 
+            Broken_Holy_Symbols
         }
         public Type Name { get; set; }
+        public bool IsReal { get; set; }
     }
 }

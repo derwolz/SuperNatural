@@ -18,7 +18,17 @@ namespace Supernatural
             WinchesterAve,
             Bar,
             CornField,
-            TrailerHome
+            TrailerHome,
+            value10,
+            value11,
+            value12,
+            value13,
+            value14,
+            value15,
+            value16,
+            value17,
+            value18,
+            value19
         }
 
         public enum Panic
@@ -32,6 +42,7 @@ namespace Supernatural
         public Dictionary<Name, Name> AdjacentPathA = new Dictionary<Name, Name>();
         public Dictionary<Name, Name> AdjacentPathB = new Dictionary<Name, Name>();
         public Dictionary<Name, Name> AdjacentPathC = new Dictionary<Name, Name>();
+        public Dictionary<Name, Name> AdjacentPathD = new Dictionary<Name, Name>();
         Dictionary<Name, Panic> PanicLevels = new Dictionary<Name, Panic>();
         public Name TileName { get; set; }
 
@@ -41,26 +52,36 @@ namespace Supernatural
             List<Object> NewValues = new List<object>();
             foreach (var Value in Values)
                 NewValues.Add(Value);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < NewValues.Count; i++)
             {
-                if (i < 9)
+                if (i < NewValues.Count-1)
                     AdjacentPathA.Add((Name)NewValues[i], (Name)NewValues[i] + 1);
                 if (i > 0)
                     AdjacentPathB.Add((Name)NewValues[i], (Name)NewValues[i] - 1);
-                if (i == 0 || i == 5) 
+                if (i -6 <= 0) 
                 { 
-                AdjacentPathC.Add((Name)NewValues[i], (Name)NewValues[i+4]);
-                AdjacentPathC.Add((Name)NewValues[i+4], (Name)NewValues[i]);
+                    AdjacentPathC.Add((Name)NewValues[i], (Name)NewValues[i+9]);
+                    AdjacentPathC.Add((Name)NewValues[i+9], (Name)NewValues[i]);
                 }
-                if (i == 3)
+                if (i == 11)
                 {
-                    AdjacentPathC.Add((Name)NewValues[i], (Name)NewValues[i + 3]);
-                    AdjacentPathC.Add((Name)NewValues[i + 3], (Name)NewValues[i]);
+                    AdjacentPathD.Add((Name)NewValues[i], (Name)NewValues[i + 7]);
+                    AdjacentPathD.Add((Name)NewValues[i + 7], (Name)NewValues[i]);
                 }
-                if (i == 2)
+                if (i == 0)
                 {
-                    AdjacentPathC.Add((Name)NewValues[i], (Name)NewValues[i + 5]);
-                    AdjacentPathC.Add((Name)NewValues[i + 5], (Name)NewValues[i]);
+                    AdjacentPathB.Add((Name)NewValues[i], (Name)NewValues[i + 7]);
+                    AdjacentPathC.Add((Name)NewValues[i + 7], (Name)NewValues[i]);
+                }
+                if (i == 9)
+                {
+                    AdjacentPathD.Add((Name)NewValues[i], (Name)NewValues[i + 8]);
+                    AdjacentPathD.Add((Name)NewValues[i + 8], (Name)NewValues[i]);
+                }
+                if (i == 13)
+                {
+                    AdjacentPathD.Add((Name)NewValues[i], (Name)NewValues[i + 6]);
+                    AdjacentPathD.Add((Name)NewValues[i+6], (Name)NewValues[i]);
                 }
                 
             }
@@ -68,8 +89,11 @@ namespace Supernatural
                 Console.WriteLine("{0} goes to {1}", path.Key, path.Value);
            foreach (var path in AdjacentPathB)
                 Console.WriteLine("{0} goes to {1}", path.Key, path.Value);
-           foreach (var path in AdjacentPathC)
+            foreach (var path in AdjacentPathC)
                 Console.WriteLine("{0} goes to {1}", path.Key, path.Value);
+            foreach (var path in AdjacentPathD)
+                Console.WriteLine("{0} goes to {1}", path.Key, path.Value);
+
 
         }
         public List<Name> GetAdjacentPaths(Tile.Name name)
@@ -84,7 +108,12 @@ namespace Supernatural
             AdjacentPathC.TryGetValue(name, out result);
             if (name.ToString() != result.ToString())
                 names.Add(result);
+            AdjacentPathD.TryGetValue(name, out result);
+            if (name.ToString() != result.ToString())
+                names.Add(result);
             List<Name> results = names.Distinct().ToList();
+            if (names.Contains(name))
+                names.Remove(name);
 
             return results;
         }
