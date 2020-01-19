@@ -45,6 +45,7 @@ namespace Supernatural
         {
             Discard.Add(card);
             ActionHand.Remove(card);
+            Shuffle(1);
         }
         public void Reshuffle()
         {
@@ -56,7 +57,7 @@ namespace Supernatural
             }
         }
         
-        public void Shuffle(int times = 1)
+        public ActionDeck Shuffle(int times = 1)
         {
             Random r = new Random();
             List<Action> _tempList = new List<Action>();
@@ -67,7 +68,9 @@ namespace Supernatural
                     _tempList.Add(Deck.Actions[x]);
                     Deck.Actions.RemoveAt(x);
                 }
-            return;
+            foreach (Action card in _tempList)
+                Deck.Actions.Add(card);
+            return Deck;
         }
         public bool CanAttack(Tile.Name _tile, List<Tile.Name> tiles)
         {
@@ -108,6 +111,19 @@ namespace Supernatural
                         DiscardCard();
             }
             return;
+        }
+        public void Damage(Monster monster, int damage)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("{0} Takes a shot with the shotgun and strikes the figure dealing {1} damage.", Name, damage);
+            monster.Health -= damage;
+            if (monster.Health < 0)
+            {
+                Console.WriteLine("The Monster Falls");
+                monster.IsActive = false;
+            }
+            Console.ResetColor();
+            
         }
         public void Move(Tile _tile, int cost)
         {

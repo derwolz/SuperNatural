@@ -19,7 +19,7 @@ namespace Supernatural
                         monster.MonsterClues.Add(clue);
                     foreach (Player player in players)
                         monster.MaxHealth += 8;
-                    monster.Speed = 3;
+                    monster.Speed = 2;
                     
                     monster.Name = "Vampire";
                     break;
@@ -27,13 +27,14 @@ namespace Supernatural
                     foreach (var clue in WerewolfClues)
                         monster.MonsterClues.Add(clue);
                     foreach (Player player in players)
-                        monster.MaxHealth += 8;
-                    monster.Speed = 2;
+                        monster.MaxHealth += 10;
+                    monster.Speed = 3;
                     monster.Name = "WereWolf";
                     break;
             }
             if (players.Count > 2)
                 monster.Speed += 1;
+            monster.Health = monster.MaxHealth;
             return monster;
         }
     }

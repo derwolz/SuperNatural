@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 
+
 namespace Supernatural
 {
     public class SupernaturalGame : Game
@@ -22,6 +23,9 @@ namespace Supernatural
             monster.Position = (Tile.Name)(r.Next(9) + 1);
             monster.IsActive = true;
             bool playing = false;
+            foreach (Player player in Players)
+                player.Shuffle(3);
+            gm.Shuffle(3);
 
             while (!playing)
             {
@@ -76,15 +80,13 @@ namespace Supernatural
                                 {
                                     Console.ForegroundColor = ConsoleColor.Green;
                                     Console.WriteLine("{0} Attacks the Figure, Damage Total {1}", player.Name,monster.MaxHealth-monster.Health);
-                                    Console.ResetColor();
                                     monster.Health -= 1;
                                     if (monster.Health < 0)
                                     {
-                                        Console.ForegroundColor = ConsoleColor.Green;
-                                        Console.WriteLine("The Monster Falls");
-                                        Console.ResetColor();
+                                        Console.WriteLine("The Monster Falls");  
                                         monster.IsActive = false;
                                     }
+                                    Console.ResetColor();
                                     player.DiscardCard();
                                     break;
                                 }
@@ -103,7 +105,6 @@ namespace Supernatural
                                     Console.WriteLine("{0} drew {1}",player.Name, player.ClueHand.Last().Name.ToString());
                                     tile.DecreasePanic(player.Position);
                                     player.DiscardCard();
-                                   
                                 }
                                 else Console.WriteLine("Nothing to Investigate");
                                 break;
@@ -119,19 +120,17 @@ namespace Supernatural
                                 Action query4 = player.ActionHand[query2 - 1];
                                 switch (query4.Name)
                                 {
-                                    case Action.Type.Shotgun:
-                                        if (WeaponAbilities.Shotgun(tile, player, monster))
+                                    case Action.Type.Rifle:
+                                        if (WeaponAbilities.Rifle(tile, player, monster))
                                         {
-                                            Console.ForegroundColor = ConsoleColor.Green;
-                                            Console.WriteLine("{0} Takes a shot with the shotgun and strikes the figure Damage Total: {1}",player.Name,monster.MaxHealth-monster.Health);
-                                            Console.ResetColor();
-                                            monster.Health -= 1;
-                                            if (monster.Health < 0)
-                                            {
-                                                Console.WriteLine("The Monster Falls");
-                                                
-                                                monster.IsActive = false;
-                                            }
+                                            player.Damage(monster, WeaponAbilities.RifleDamage);
+                                            player.DiscardCard(query4);
+                                        }
+                                        break;
+                                    case Action.Type.Shotgun:
+                                        if (player.Position == monster.Position)
+                                        {
+                                            player.Damage(monster, WeaponAbilities.ShotgunDamage);
                                             player.DiscardCard(query4);
                                         }
                                         break;

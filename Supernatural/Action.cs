@@ -13,6 +13,7 @@ namespace Supernatural
             doubleResearch,
             doubleInvestigate,
             filler,
+            Rifle
             
         }
         public Type Name { get; set; }

@@ -6,7 +6,9 @@ namespace Supernatural
 {
     public static class WeaponAbilities
     {
-        public static bool Shotgun(Tile tile, Player player, Monster monster)
+        public static int ShotgunDamage = 3;
+        public static int RifleDamage = 1;
+        public static bool Rifle(Tile tile, Player player, Monster monster)
         {
             List<Tile.Name> result = new List<Tile.Name>();
             foreach (Tile.Name item in tile.GetAdjacentPaths(player.Position))
@@ -24,13 +26,7 @@ namespace Supernatural
             else return false;
         }
 
-        public static bool returnFunction()
-        {
-            Tile tile = new Tile();
-            Player player = new Player();
-            Monster monster = new Monster();
-            return Shotgun(tile,player,monster); 
-        }
+        
             
     }
 }

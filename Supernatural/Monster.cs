@@ -12,6 +12,10 @@ namespace Supernatural
             WereWolf,
             Vampire
         }
+        public enum AbilityType
+        {
+
+        }
         public string Name { get; set; }
 
         public bool IsRevealed { get; set; }
@@ -21,13 +25,15 @@ namespace Supernatural
         public int CountDown { get; set; }
         public int MaxCountDown { get; set; }
         public int Speed { get; set; }
+        public AbilityType Ability1 { get; set; }
+
         public List<Clue.Type> _MonsterClues = new List<Clue.Type>();
         public List<Clue.Type> MonsterClues { get {return _MonsterClues; } set { value = _MonsterClues; } }
         public Monster()
         {
             
             
-            this.Health = MaxHealth;
+            
             this.CountDown = 3;
             this.MaxCountDown = 3;
             
@@ -49,5 +55,6 @@ namespace Supernatural
             int monsterMoveChoice = r.Next(_tempList.Count);
             Position = _tempList[monsterMoveChoice];
         }
+        
     }
 }
