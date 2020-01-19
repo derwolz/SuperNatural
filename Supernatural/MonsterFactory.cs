@@ -20,7 +20,6 @@ namespace Supernatural
                     foreach (Player player in players)
                         monster.MaxHealth += 8;
                     monster.Speed = 2;
-                    
                     monster.Name = "Vampire";
                     break;
                 case Monster.Type.WereWolf:

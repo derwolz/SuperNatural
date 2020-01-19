@@ -16,6 +16,7 @@ namespace Supernatural
         public ActionDeck Deck = new ActionDeck();
         public List<Action> _Discard = new List<Action>();
         public List<Action> Discard { get { return _Discard; } set { value = _Discard; } }
+        public ConsoleColor Color { get; set; }
         public void DrawCard()
         {
             ActionHand.Add(Deck.Actions.First());

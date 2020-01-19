@@ -16,7 +16,11 @@ namespace Supernatural
             this.clueDeck = new ClueDeck(monster);
             IsMonsterRevealed = false;
             
+            Monsters.Add(monster);
+            
         }
+        private List<Monster> _Monsters = new List<Monster>();
+        public List<Monster> Monsters { get { return _Monsters; } set { value = _Monsters; } }
         public bool CheckWinCon(Monster monster, bool LoseCon)
         {
             if (monster.Health < 0 && monster.IsRevealed == true && !LoseCon)
@@ -98,6 +102,18 @@ namespace Supernatural
             foreach (Clue card in _tempList)
                 clueDeck.Clues.Add(card);
             return clueDeck;
+        }
+        public void DisplayMonsters()
+        {
+            int count = 0;
+            foreach (Monster monster in Monsters)
+            {
+                count += 1;
+                string monsterName = "";
+                if (monster.IsRevealed == false) monsterName = "Monster";
+                else monsterName = monster.Name;
+                Console.WriteLine("\n{0}) {1} is at {2}", count, monsterName, monster.Position);
+            }
         }
     }
 }

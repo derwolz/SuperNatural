@@ -21,7 +21,10 @@ namespace Supernatural
                 for (int i = 0; i < numquery; i++)
                 {
                     Player player = new Player();
+                    player.Color = (ConsoleColor)(2+i * 3);
+                    Console.ForegroundColor = player.Color;
                     Console.WriteLine("Pick a name for Player {0}", i + 1);
+                    Console.ResetColor();
                     player.Name = Console.ReadLine();
                     game.Players.Add(player);
                 }
