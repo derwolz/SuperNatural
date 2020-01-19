@@ -88,6 +88,7 @@ namespace Supernatural
 
             return results;
         }
+        //....................................................................Panic Controls...........................................................
         public void IncreasePanic(Tile.Name tile)
         {
             PanicLevels.TryGetValue(tile, out Panic _panic);

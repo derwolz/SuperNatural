@@ -21,10 +21,30 @@ namespace Supernatural
             ActionHand.Add(Deck.Actions.First());
             Deck.Actions.RemoveAt(0);
         }
+        public void DiscardCard()
+        {
+            int count = 1;
+            Console.WriteLine("Choose a card to Discard");
+            
+            foreach (Action card in ActionHand)
+            {
+                Console.Write("{0}). {1}, ", count, card.Name.ToString());
+                count += 1;
+            }
+            Int32.TryParse(Console.ReadLine(), out int query2);
+            
+            if (query2 == 0)
+            {
+                Console.WriteLine("Incorrect Input, Discarding first card.");
+                query2 = 1;
+            }
+            Discard.Add(ActionHand[query2-1]);
+            ActionHand.RemoveAt(query2 - 1);
+        }
         public void DiscardCard(Action card)
         {
-            ActionHand.Remove(card);
             Discard.Add(card);
+            ActionHand.Remove(card);
         }
         public void Reshuffle()
         {
@@ -60,6 +80,68 @@ namespace Supernatural
             if (Position == _tile)
                 result = true;
             return result;
+        }
+        public void ResearchClue(int cost)
+        {
+            Console.WriteLine("Which Clue do you wish to research?");
+            int count = 1;
+            foreach (Clue clue in ClueHand)
+            {
+                Console.Write("{0}) {1} ", count, clue.Name.ToString());
+                count += 1;
+            }
+            Int32.TryParse(Console.ReadLine(), out int query2);
+            if (query2 == 0 || query2 > ClueHand.Count) return;
+            if (query2 <= ClueHand.Count)
+            {
+                Console.WriteLine("{0} Researched {1}.", Name, ClueHand[query2 - 1]);
+                ClueHand.RemoveAt(query2 - 1);
+                if (cost > 0)
+                    for (int i = 0; i < cost; i++)
+                        DiscardCard();
+            }
+            return;
+        }
+        public void Move(Tile _tile, int cost)
+        {
+
+            List<Tile.Name> tempPath = new List<Tile.Name>();
+            tempPath = _tile.GetAdjacentPaths(Position);
+            int count = 0;
+            foreach (Tile.Name item in tempPath)
+            {
+                Console.Write("{0}) {1}\n", count + 1, item.ToString());
+                count += 1;
+            }
+            Int32.TryParse(Console.ReadLine(), out int query2);
+            switch (query2)
+            {
+                case 1:
+                    Position = tempPath[0];
+                    Console.WriteLine("{0} moved to {1}", Name, Position);
+                    if (cost > 0)
+                        for (int i = 0; i < cost; i++)
+                            DiscardCard();
+                    break;
+                case 2:
+                    Position = tempPath[1];
+                    Console.WriteLine("{0} moved to {1}", Name, Position);
+                    if (cost > 0)
+                        for (int i = 0; i < cost; i++)
+                        DiscardCard();
+                    break;
+                case 3:
+                    if (tempPath.Count > 2)
+                        Position = tempPath[2];
+                    Console.WriteLine("{0} moved to {1}", Name, Position);
+                    if (cost > 0)
+                        for (int i = 0; i < cost; i++)
+                        DiscardCard();
+                    break;
+                default:
+                    Console.WriteLine("Not correct input.");
+                    break;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Supernatural
         public enum Type
         {
             doubleMove,
-            Attack,
+            Shotgun,
             doubleResearch,
             doubleInvestigate,
             filler,
