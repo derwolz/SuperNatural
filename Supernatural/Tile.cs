@@ -9,26 +9,26 @@ namespace Supernatural
     {
         public enum Name
         {
-            BakerStreet,
+            Baker_Street,
             Motel,
             Church,
             Graveyard,
             Shops,
             Library,
-            WinchesterAve,
-            Bar,
+            Winchester_Ave,
             CornField,
-            TrailerHome,
-            value10,
-            value11,
-            value12,
-            value13,
-            value14,
-            value15,
-            value16,
-            value17,
-            value18,
-            value19
+            Bar,
+            Trailer_Home,
+            Junkyard,
+            High_School_Stadium,
+            High_School,
+            Green_Meadows_Lane,
+            Car_Dealership,
+            CityHall,
+            Mall_Food_Court,
+            Mall_Back_Entrance,
+            Mall_Front_Entrance,
+            MallParkingLot,
         }
 
         public enum Panic

@@ -60,7 +60,7 @@ namespace Supernatural
                             playercanAttack = player.CanAttack(monster.Position, tile.GetAdjacentPaths(player.Position));
                             if (playercanAttack && monster.IsActive) canAttack = "(A)ttack";
                         }
-                        bool playercanResearch = (player.Position == Tile.Name.Library || player.Position == Tile.Name.Motel || player.Position == Tile.Name.TrailerHome);
+                        bool playercanResearch = (player.Position == Tile.Name.Library || player.Position == Tile.Name.Motel || player.Position == Tile.Name.Trailer_Home || player.Position == Tile.Name.CityHall);
                         bool playercanInvestigate = (tile.GetPanic(player.Position) != Tile.Panic.Level_0);
                         if (playercanResearch) canResearch = "(R)esearch";
                         if (playercanInvestigate) canInvestigate = "(I)nvestigate";
