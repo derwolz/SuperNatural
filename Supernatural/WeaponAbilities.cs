@@ -8,25 +8,26 @@ namespace Supernatural
     {
         public static int ShotgunDamage = 3;
         public static int RifleDamage = 1;
-        public static bool Rifle(Tile tile, Player player, Monster monster)
+        public static List<Monster> Rifle(Tile tile, Player player, List<Monster> monsters)
         {
-            List<Tile.Name> result = new List<Tile.Name>();
-            foreach (Tile.Name item in tile.GetAdjacentPaths(player.Position))
+            List<Monster> result = new List<Monster>();
+            List<Tile.Name> posresult = new List<Tile.Name>();
+            foreach (Monster monster in monsters)
             {
-                List<Tile.Name> tempList = new List<Tile.Name>();
-                tempList = tile.GetAdjacentPaths(item);
-                foreach (Tile.Name item2 in tempList)
+                foreach (Tile.Name item in tile.GetAdjacentPaths(player.Position))
                 {
-                    result.Add(item2);
+                    List<Tile.Name> tempList = new List<Tile.Name>();
+                    tempList = tile.GetAdjacentPaths(item);
+                    foreach (Tile.Name item2 in tempList)
+                    {
+                        posresult.Add(item2);
+                    }
+                    posresult.Add(item);
                 }
-                result.Add(item);
+                if (posresult.Contains(monster.Position))
+                    result.Add(monster);
             }
-            if (result.Contains(monster.Position))
-                return true;
-            else return false;
+            return result;
         }
-
-        
-            
     }
 }

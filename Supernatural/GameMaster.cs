@@ -88,7 +88,7 @@ namespace Supernatural
             clueDeck.Clues.RemoveAt(0);
         }
 
-        public ClueDeck Shuffle(int times = 1)
+        public void Shuffle(int times = 1)
         {
             Random r = new Random();
             List<Clue> _tempList = new List<Clue>();
@@ -101,7 +101,7 @@ namespace Supernatural
                 }
             foreach (Clue card in _tempList)
                 clueDeck.Clues.Add(card);
-            return clueDeck;
+            return;
         }
         public void DisplayMonsters()
         {

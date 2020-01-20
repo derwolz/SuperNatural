@@ -8,27 +8,29 @@ namespace Supernatural
 {
     public class SupernaturalGame : Game
     {
+        const int MaxHandSize = 3;
         public override void Play()
         {
             Tile tile = new Tile();
-            
+            int tileNum = Enum.GetValues(typeof(Tile.Name)).Length;
+            int monsNum = Enum.GetValues(typeof(Monster.Type)).Length;
             Monster Initialmonster = new Monster();
             MonsterFactory factory = new MonsterFactory();
             Random random = new Random();
-            int rand = random.Next(2);
+            int rand = random.Next(monsNum);
             Monster.Type mType = (Monster.Type)rand;
             Initialmonster = factory.Factory(mType, Players);
             GameMaster gm = new GameMaster(Initialmonster);
             Random r = new Random();
-            gm.Monsters[0].Position = (Tile.Name)(r.Next(18) + 1);
+            gm.Monsters[0].Position = (Tile.Name)(r.Next(tileNum-1) + 1);
             gm.Monsters[0].IsActive = true;
             
             
             
             bool playing = false;
             foreach (Player player in Players)
-                player.Shuffle(3);
-            gm.Shuffle(3);
+                player.Shuffle();
+            gm.Shuffle();
 
             while (!playing)
             {
@@ -45,10 +47,10 @@ namespace Supernatural
                     bool playercanAttack = false;
                     int cost = 1;
                     bool endTurn = false;
-                    int query2 = 0;
-                    if (player.Deck.Actions.Count <= 4)
+                    int numQuery = 0;//...................................................Reset Variables.................................................................///
+                    if (player.Deck.Actions.Count <= MaxHandSize)
                         player.Reshuffle();
-                    for (int handsize = player.ActionHand.Count; handsize <= 3; handsize++)
+                    for (int handsize = player.ActionHand.Count; handsize <= MaxHandSize; handsize++)
                         player.DrawCard();
                     while (!endTurn)//.......................................................................Turn Start..................................................//
                     
@@ -66,7 +68,7 @@ namespace Supernatural
                         Console.Write("\n"+player.Name);
                         Console.ResetColor();
                         Console.WriteLine("'s turn (M)ove {0} {1} {2} (S)kip (U)se Card", canInvestigate, canResearch, canAttack);//.........Display Player Choices.......//
-                        Console.WriteLine("{0} is located at {1}", player.Name, player.Position);
+                        Console.WriteLine("{0} is located at {1}", player.Name, player.Position);//............................show Player Position.......................//
                         foreach (Clue clue in player.ClueHand)
                             Console.WriteLine("{0}", clue.Name);
                         Console.WriteLine("The Panic at {0} is at {1}", player.Position, tile.GetPanic(player.Position));//..................Show Current Panic..........//
@@ -85,8 +87,8 @@ namespace Supernatural
                         //................................................................................................................................................//
                         //................................................................Player Choice...................................................................//
                         //................................................................................................................................................//
-                        string query = Console.ReadLine();
-                        switch (query.ToLower())
+                        string strQuery = Console.ReadLine();
+                        switch (strQuery.ToLower())
                         {
                             case "m"://.........................................................................Movement..................................//
                                 int count = 0;
@@ -96,10 +98,10 @@ namespace Supernatural
                             case "a"://..........................................................................Attack....................................//
                                 Console.WriteLine("Attack which monster?");
                                 gm.DisplayMonsters();
-                                Int32.TryParse(Console.ReadLine(), out query2);
+                                Int32.TryParse(Console.ReadLine(), out numQuery);
                                 {
-                                    if (query2 == 0) query2 = 1;
-                                    Monster monster = gm.Monsters[query2-1];
+                                    if (numQuery == 0) numQuery = 1;
+                                    Monster monster = gm.Monsters[numQuery-1];
                                     player.Damage(monster, 1);
                                     if (monster.Health < 0)
                                     {
@@ -112,13 +114,14 @@ namespace Supernatural
                                 }
                             case "r"://............................................................................Research..............................//
                                 cost = 1;
-                                player.ResearchClue(cost, gm);
+                                int times = 1;
+                                player.ResearchClue(cost, gm, times);
                                 break;
                             case "i"://.............................................................................Investigate..........................//
                                 Console.WriteLine("{0} is at {1}", player.Position, tile.GetPanic(player.Position));
                                 Console.WriteLine("Do you want to search for clues? (y/n) (level_1 and above)");
-                                string query3 = Console.ReadLine().ToLower();
-                                if (query3 == "y" && (tile.GetPanic(player.Position) != Tile.Panic.Level_0 ))
+                                strQuery = Console.ReadLine().ToLower();
+                                if (strQuery == "y" && (tile.GetPanic(player.Position) != Tile.Panic.Level_0 ))
                                 {
                                     gm.Deal(player.ClueHand);
                                     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -136,43 +139,45 @@ namespace Supernatural
                                     Console.Write("{0}). {1} ", count, card.Name.ToString());
                                     count += 1;
                                 }
-                                Int32.TryParse(Console.ReadLine(), out query2);
-                                if (query2 == 0) break;
-                                Action query4 = player.ActionHand[query2 - 1];
+                                Int32.TryParse(Console.ReadLine(), out numQuery);
+                                if (numQuery == 0) break;
+                                Action selectedAction = player.ActionHand[numQuery - 1];
                                 Monster selectedMonster = null;
-                                switch (query4.Name)
+                                switch (selectedAction.Name)
                                 {
                                     case Action.Type.Rifle://.....................................Rifle.................................................//
-                                        gm.DisplayMonsters();
-                                        Int32.TryParse(Console.ReadLine(), out query2);
-                                        if (query2 == 0)      query2 = 1;
-                                        selectedMonster = gm.Monsters[query2 - 1];
-                                        if (WeaponAbilities.Rifle(tile, player, selectedMonster))
+                                        List<Monster> rangedMonsters = WeaponAbilities.Rifle(tile, player, gm.Monsters);
+                                        count = 1;
+                                        foreach (Monster monster in rangedMonsters)
                                         {
-                                            player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
-                                            player.DiscardCard(query4);
+                                            if (monster.IsRevealed == true) monsterName = monster.Name;
+                                            else monsterName = "A figure";
+                                            Console.WriteLine("{0}). {1} is at {2}",count, monsterName, monster.Position);
+                                            count += 1;
                                         }
+                                        Int32.TryParse(Console.ReadLine(), out numQuery);
+                                        if (numQuery == 0 || numQuery > rangedMonsters.Count)      numQuery = 1; // default number
+                                        selectedMonster = gm.Monsters[numQuery - 1];
+                                        player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
+                                        player.DiscardCard(selectedAction);
                                         break;
                                     case Action.Type.Shotgun://..................................Shotgun...............................................//
                                         gm.DisplayMonsters();
-                                        Int32.TryParse(Console.ReadLine(), out query2);
-                                        if (query2 == 0)      query2 = 1;
-                                            selectedMonster = gm.Monsters[query2 - 1];
+                                        Int32.TryParse(Console.ReadLine(), out numQuery);
+                                        if (numQuery == 0)      numQuery = 1;
+                                            selectedMonster = gm.Monsters[numQuery - 1];
                                             if (player.Position == selectedMonster.Position)
                                             {
                                                 player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
-                                                player.DiscardCard(query4);
+                                                player.DiscardCard(selectedAction);
                                             }
                                             break;
-                                        
                                     case Action.Type.doubleMove://..............................Double Movement..........................................//
-                                        for (int i = 0; i < 2; i++)
-                                        {
                                             Console.WriteLine("{0} sprints",player.Name);
                                             cost = 0;
-                                            player.Move(tile, cost);
-                                        }
-                                        player.DiscardCard(query4);
+                                            times = 2;
+                                            player.Move(tile, cost, times);
+                                        player.DiscardCard(selectedAction);
                                         break;
                                     case Action.Type.doubleInvestigate://......................Double Investigate.......................................//
                                         for (int i = 0; i < 2; i++)
@@ -181,13 +186,14 @@ namespace Supernatural
                                                 gm.Deal(player.ClueHand);
                                                 Console.WriteLine("{0} drew {1}", player.Name, player.ClueHand.Last().Name.ToString());
                                                 tile.DecreasePanic(player.Position);
+                                                player.DiscardCard(selectedAction);
                                             }
                                         break;
                                     case Action.Type.doubleResearch://.............................Double Research......................................//
                                         cost = 0;
-                                        for (int i = 0; i < 2; i++)
-                                            player.ResearchClue(cost, gm);
-                                        player.DiscardCard(query4);
+                                        times = 2;
+                                        player.ResearchClue(cost, gm, times);
+                                        player.DiscardCard(selectedAction);
                                         break;
                                 }    
                                 break;
