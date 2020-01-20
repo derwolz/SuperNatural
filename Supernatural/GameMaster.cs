@@ -21,6 +21,9 @@ namespace Supernatural
         }
         private List<Monster> _Monsters = new List<Monster>();
         public List<Monster> Monsters { get { return _Monsters; } set { value = _Monsters; } }
+        private List<Monster> _Summoned = new List<Monster>();
+        public List<Monster> Summoned { get { return _Summoned; } set { value = _Summoned; } }
+        public List<Monster> Dead { get { return _Monsters; } set { value = _Monsters; } }
         public bool CheckWinCon(Monster monster, bool LoseCon)
         {
             if (monster.Health < 0 && monster.IsRevealed == true && !LoseCon)
@@ -29,31 +32,13 @@ namespace Supernatural
             }
             else return false;
         }
-        public bool CheckLoseCon (Tile tile)
+        public bool CheckLoseCon(Board board)
         {
             int count = 0;
-            foreach (var key in tile.AdjacentPathA.Keys)
-            {
-                if (tile.GetPanic(key) == Tile.Panic.Level_4)
+            foreach (Tile tile in board.tiles)
+                if (board.GetPanic(tile.Name) == Tile.Panic.Level_4)
                     count += 1;
-            }
-            foreach (var key in tile.AdjacentPathB.Keys)
-            {
-                if (tile.GetPanic(key) == Tile.Panic.Level_4)
-                    count += 1;
-            }
-            foreach (var key in tile.AdjacentPathC.Keys)
-            {
-                if (tile.GetPanic(key) == Tile.Panic.Level_4)
-                    count += 1;
-            }
-            foreach (var key in tile.AdjacentPathD.Keys)
-            {
-                if (tile.GetPanic(key) == Tile.Panic.Level_4)
-                    count += 1;
-            }
-            if (count > (tile.AdjacentPathA.Count + tile.AdjacentPathB.Count + tile.AdjacentPathC.Count + tile.AdjacentPathD.Count) / 2)
-                return true;
+            if (count > (board.tiles.Count / 2)) return true;
             else return false;
         }
         public void RevealMonster(Monster monster)
@@ -64,7 +49,6 @@ namespace Supernatural
                 foreach (Clue.Type clue2 in monster.MonsterClues)
                     if (clue.Name == clue2)
                         TrueCheck += 1;
-
             }
             if (TrueCheck == monster.MonsterClues.Count)
             {

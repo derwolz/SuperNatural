@@ -11,8 +11,8 @@ namespace Supernatural
         const int MaxHandSize = 3;
         public override void Play()
         {
-            Tile tile = new Tile();
-            int tileNum = Enum.GetValues(typeof(Tile.Name)).Length;
+            Board board = new Board();
+            int boardNum = Enum.GetValues(typeof(Tile.Places)).Length;
             int monsNum = Enum.GetValues(typeof(Monster.Type)).Length;
             Monster Initialmonster = new Monster();
             MonsterFactory factory = new MonsterFactory();
@@ -22,7 +22,7 @@ namespace Supernatural
             Initialmonster = factory.Factory(mType, Players);
             GameMaster gm = new GameMaster(Initialmonster);
             Random r = new Random();
-            gm.Monsters[0].Position = (Tile.Name)(r.Next(tileNum-1) + 1);
+            gm.Monsters[0].Position = (Tile.Places)(r.Next(boardNum-Players.Count) + Players.Count);
             gm.Monsters[0].IsActive = true;
             
             
@@ -30,7 +30,7 @@ namespace Supernatural
             bool playing = false;
             foreach (Player player in Players)
                 player.Shuffle();
-            gm.Shuffle();
+            //gm.Shuffle();
 
             while (!playing)
             {
@@ -57,11 +57,11 @@ namespace Supernatural
                     {
                         foreach (Monster monster in gm.Monsters)//.............................................Display Start.............................................//
                         {
-                            playercanAttack = player.CanAttack(monster.Position, tile.GetAdjacentPaths(player.Position));
+                            playercanAttack = player.CanAttack(monster.Position, board.GetAdjacentTiles(player.Position));
                             if (playercanAttack && monster.IsActive) canAttack = "(A)ttack";
                         }
-                        bool playercanResearch = (player.Position == Tile.Name.Library || player.Position == Tile.Name.Motel || player.Position == Tile.Name.Trailer_Home || player.Position == Tile.Name.CityHall);
-                        bool playercanInvestigate = (tile.GetPanic(player.Position) != Tile.Panic.Level_0);
+                        bool playercanResearch = (player.Position == Tile.Places.Library || player.Position == Tile.Places.Motel || player.Position == Tile.Places.Trailer_Home || player.Position == Tile.Places.CityHall);
+                        bool playercanInvestigate = (board.GetPanic(player.Position) != Tile.Panic.Level_0);
                         if (playercanResearch) canResearch = "(R)esearch";
                         if (playercanInvestigate) canInvestigate = "(I)nvestigate";
                         Console.ForegroundColor = player.Color;
@@ -71,7 +71,7 @@ namespace Supernatural
                         Console.WriteLine("{0} is located at {1}", player.Name, player.Position);//............................show Player Position.......................//
                         foreach (Clue clue in player.ClueHand)
                             Console.WriteLine("{0}", clue.Name);
-                        Console.WriteLine("The Panic at {0} is at {1}", player.Position, tile.GetPanic(player.Position));//..................Show Current Panic..........//
+                        Console.WriteLine("The Panic at {0} is at {1}", player.Position, board.GetPanic(player.Position));//..................Show Current Panic..........//
                         foreach (Monster monster in gm.Monsters)
                         {
                             if (monster.IsRevealed) monsterName = "" + monster.Name + " is rampaging at the ";
@@ -93,7 +93,7 @@ namespace Supernatural
                             case "m"://.........................................................................Movement..................................//
                                 int count = 0;
                                 cost = 1;
-                                player.Move(tile, cost);
+                                player.Move(board, cost);
                                 break;
                             case "a"://..........................................................................Attack....................................//
                                 Console.WriteLine("Attack which monster?");
@@ -118,16 +118,16 @@ namespace Supernatural
                                 player.ResearchClue(cost, gm, times);
                                 break;
                             case "i"://.............................................................................Investigate..........................//
-                                Console.WriteLine("{0} is at {1}", player.Position, tile.GetPanic(player.Position));
+                                Console.WriteLine("{0} is at {1}", player.Position, board.GetPanic(player.Position));
                                 Console.WriteLine("Do you want to search for clues? (y/n) (level_1 and above)");
                                 strQuery = Console.ReadLine().ToLower();
-                                if (strQuery == "y" && (tile.GetPanic(player.Position) != Tile.Panic.Level_0 ))
+                                if (strQuery == "y" && (board.GetPanic(player.Position) != Tile.Panic.Level_0 ))
                                 {
                                     gm.Deal(player.ClueHand);
                                     Console.ForegroundColor = ConsoleColor.Cyan;
                                     Console.WriteLine("{0} drew {1}",player.Name, player.ClueHand.Last().Name.ToString());
                                     Console.ResetColor();
-                                    tile.DecreasePanic(player.Position);
+                                    board.DecreasePanic(player.Position);
                                     player.DiscardCard();
                                 }
                                 else Console.WriteLine("Nothing to Investigate");
@@ -146,7 +146,7 @@ namespace Supernatural
                                 switch (selectedAction.Name)
                                 {
                                     case Action.Type.Rifle://.....................................Rifle.................................................//
-                                        List<Monster> rangedMonsters = WeaponAbilities.Rifle(tile, player, gm.Monsters);
+                                        List<Monster> rangedMonsters = WeaponAbilities.Rifle(board, player, gm.Monsters);
                                         count = 1;
                                         foreach (Monster monster in rangedMonsters)
                                         {
@@ -176,16 +176,16 @@ namespace Supernatural
                                             Console.WriteLine("{0} sprints",player.Name);
                                             cost = 0;
                                             times = 2;
-                                            player.Move(tile, cost, times);
+                                            player.Move(board, cost, times);
                                         player.DiscardCard(selectedAction);
                                         break;
                                     case Action.Type.doubleInvestigate://......................Double Investigate.......................................//
                                         for (int i = 0; i < 2; i++)
-                                            if (tile.GetPanic(player.Position) != Tile.Panic.Level_0)
+                                            if (board.GetPanic(player.Position) != Tile.Panic.Level_0)
                                             {
                                                 gm.Deal(player.ClueHand);
                                                 Console.WriteLine("{0} drew {1}", player.Name, player.ClueHand.Last().Name.ToString());
-                                                tile.DecreasePanic(player.Position);
+                                                board.DecreasePanic(player.Position);
                                                 player.DiscardCard(selectedAction);
                                             }
                                         break;
@@ -207,13 +207,12 @@ namespace Supernatural
                         //.........................................................................................................................................//
                         //......................................................End Player Turn Sequence...........................................................//
                         //.........................................................................................................................................//
-                        foreach (Monster monster in gm.Monsters)
-                        {
-                            gm.RevealMonster(monster);
-                            if (gm.CheckLoseCon(tile))
+                        Monster bossMonster = gm.Monsters.First();
+                            gm.RevealMonster(bossMonster);
+                            if (gm.CheckLoseCon(board))
                             {
                                 Console.BackgroundColor = ConsoleColor.DarkRed;
-                                Console.WriteLine("{0} Has destroyed the City! You Have Failed!", monster.Name);
+                                Console.WriteLine("{0} Has destroyed the City! You Have Failed!", bossMonster.Name);
                                 Console.WriteLine("Press enter to exit");
                                 Console.ReadLine();
                                 endTurn = true;
@@ -221,10 +220,10 @@ namespace Supernatural
                                 endProgram = true;
                                 return;
                             }
-                            if (gm.CheckWinCon(monster, gm.CheckLoseCon(tile)))
+                            if (gm.CheckWinCon(bossMonster, gm.CheckLoseCon(board)))
                             {
-                                Console.BackgroundColor = ConsoleColor.Green;
-                                Console.WriteLine("You have slain the {0} and saved the City!", monster.Name);
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("You have slain the {0} and saved the City!", bossMonster.Name);
                                 Console.WriteLine("Press enter to exit");
                                 Console.ReadLine();
                                 endTurn = true;
@@ -232,7 +231,14 @@ namespace Supernatural
                                 endProgram = true;
                                 return;
                             }
+                            foreach (Monster monster in gm.Monsters)
+                        {
+                            if (monster.Health < 1)
+                                gm.Dead.Add(monster);
                         }
+                        foreach (Monster monster in gm.Dead)
+                            gm.Monsters.Remove(monster);
+                        
                     }
                 }
                 //...............................................................................................................................................................//
@@ -253,14 +259,14 @@ namespace Supernatural
                     {
                         for (int move = monster.Speed; move > 0; move--)
                         {
-                            monster.Move(tile.GetAdjacentPaths(monster.Position), Players);
-                            tile.IncreasePanic(monster.Position);
+                            monster.Move(board.GetAdjacentTiles(monster.Position), Players);
+                            board.IncreasePanic(monster.Position);
                             Console.WriteLine("A commotion is heard coming from {0}", monster.Position);
                         }
                         Console.ResetColor();
                         if (monster.IsRevealed)
                         {
-                            monster.UseAbility(tile, Players, gm);
+                            monster.UseAbility(board, Players, gm);
                         }
                     }
                     else
@@ -276,6 +282,9 @@ namespace Supernatural
                         Console.ResetColor();
                     }
                 }
+                foreach (Monster monster in gm.Summoned)
+                    gm.Monsters.Add(monster);
+                gm.Summoned.Clear();
                 
             }
         }

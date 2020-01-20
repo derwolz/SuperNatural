@@ -8,17 +8,17 @@ namespace Supernatural
     {
         public static int ShotgunDamage = 3;
         public static int RifleDamage = 1;
-        public static List<Monster> Rifle(Tile tile, Player player, List<Monster> monsters)
+        public static List<Monster> Rifle(Board board, Player player, List<Monster> monsters)
         {
             List<Monster> result = new List<Monster>();
-            List<Tile.Name> posresult = new List<Tile.Name>();
+            List<Tile.Places> posresult = new List<Tile.Places>();
             foreach (Monster monster in monsters)
             {
-                foreach (Tile.Name item in tile.GetAdjacentPaths(player.Position))
+                foreach (Tile.Places item in board.GetAdjacentTiles(player.Position))
                 {
-                    List<Tile.Name> tempList = new List<Tile.Name>();
-                    tempList = tile.GetAdjacentPaths(item);
-                    foreach (Tile.Name item2 in tempList)
+                    List<Tile.Places> tempList = new List<Tile.Places>();
+                    tempList = board.GetAdjacentTiles(item);
+                    foreach (Tile.Places item2 in tempList)
                     {
                         posresult.Add(item2);
                     }

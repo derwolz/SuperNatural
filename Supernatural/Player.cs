@@ -7,7 +7,7 @@ namespace Supernatural
 {
     public class Player
     {
-        public Tile.Name Position { get; set; }
+        public Tile.Places Position { get; set; }
         public string Name { get; set; }
         private List<Clue> _ClueHand = new List<Clue>();
         public List<Clue> ClueHand { get { return _ClueHand; } set { value = _ClueHand; } }
@@ -74,7 +74,7 @@ namespace Supernatural
                 Deck.Actions.Add(card);
             return;
         }
-        public bool CanAttack(Tile.Name _tile, List<Tile.Name> tiles)
+        public bool CanAttack(Tile.Places _tile, List<Tile.Places> tiles)
         {
             bool result = false;
             foreach (var tile in tiles)
@@ -124,20 +124,20 @@ namespace Supernatural
             monster.Health -= damage;
             if (monster.Health < 0)
             {
-                Console.WriteLine("The Monster Falls");
+                Console.WriteLine("The {0} Falls", monster.Name);
                 monster.IsActive = false;
             }
             Console.ResetColor();
             
         }
-        public void Move(Tile _tile, int cost, int times = 1)
+        public void Move(Board board, int cost, int times = 1)
         {
             for (int i = 0; i < times; i++)
             {
-                List<Tile.Name> tempPath = new List<Tile.Name>();
-                tempPath = _tile.GetAdjacentPaths(Position);
+                List<Tile.Places> tempPath = new List<Tile.Places>();
+                tempPath = board.GetAdjacentTiles(Position);
                 int count = 0;
-                foreach (Tile.Name item in tempPath)
+                foreach (Tile.Places item in tempPath)
                 {
                     Console.Write("{0}) {1}\n", count + 1, item.ToString());
                     count += 1;

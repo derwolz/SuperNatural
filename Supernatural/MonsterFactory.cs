@@ -21,6 +21,9 @@ namespace Supernatural
                         monster.MaxHealth += 8;
                     monster.Speed = 2;
                     monster.Name = "Vampire";
+                    monster.Abilities.Add(Monster.AbilityType.SummonBats);
+                    monster.Abilities.Add(Monster.AbilityType.Vampirism);
+                    
                     break;
                 case Monster.Type.WereWolf:
                     foreach (var clue in WerewolfClues)
@@ -29,6 +32,8 @@ namespace Supernatural
                         monster.MaxHealth += 10;
                     monster.Speed = 3;
                     monster.Name = "WereWolf";
+                    monster.Abilities.Add(Monster.AbilityType.ExtremePanic);
+                    monster.Abilities.Add(Monster.AbilityType.ExtremeSpeed);
                     break;
             }
             if (players.Count > 2)
