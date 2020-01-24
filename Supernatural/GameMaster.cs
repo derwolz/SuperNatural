@@ -23,7 +23,7 @@ namespace Supernatural
         public List<Monster> Monsters { get { return _Monsters; } set { value = _Monsters; } }
         private List<Monster> _Summoned = new List<Monster>();
         public List<Monster> Summoned { get { return _Summoned; } set { value = _Summoned; } }
-        public List<Monster> Dead { get { return _Monsters; } set { value = _Monsters; } }
+        
         public bool CheckWinCon(Monster monster, bool LoseCon)
         {
             if (monster.Health < 0 && monster.IsRevealed == true && !LoseCon)

@@ -96,12 +96,17 @@ namespace Supernatural
                                 player.Move(board, cost);
                                 break;
                             case "a"://..........................................................................Attack....................................//
-                                Console.WriteLine("Attack which monster?");
-                                gm.DisplayMonsters();
-                                Int32.TryParse(Console.ReadLine(), out numQuery);
+                                int monsterNum = 0;
+                                    foreach (Monster monster in gm.Monsters)
+                                        monsterNum += board.GetAdjacentTiles(player.Position).FindAll(x => x == monster.Position).Count;
+                                if (monsterNum > 0)
                                 {
-                                    if (numQuery == 0) numQuery = 1;
-                                    Monster monster = gm.Monsters[numQuery-1];
+                                    Console.WriteLine("Attack which monster?");
+                                    gm.DisplayMonsters();
+                                    Int32.TryParse(Console.ReadLine(), out numQuery);
+
+                                    if (numQuery == 0 || numQuery > monsterNum) numQuery = 1;
+                                    Monster monster = gm.Monsters[numQuery - 1];
                                     player.Damage(monster, 1);
                                     if (monster.Health < 0)
                                     {
@@ -110,8 +115,10 @@ namespace Supernatural
                                     }
                                     Console.ResetColor();
                                     player.DiscardCard();
-                                    break;
                                 }
+                                
+                                    break;
+                                
                             case "r"://............................................................................Research..............................//
                                 cost = 1;
                                 int times = 1;
@@ -148,11 +155,12 @@ namespace Supernatural
                                     case Action.Type.Rifle://.....................................Rifle.................................................//
                                         List<Monster> rangedMonsters = WeaponAbilities.Rifle(board, player, gm.Monsters);
                                         count = 1;
-                                        foreach (Monster monster in rangedMonsters)
+                                        foreach (Monster monster1 in rangedMonsters)
                                         {
-                                            if (monster.IsRevealed == true) monsterName = monster.Name;
-                                            else monsterName = "A figure";
-                                            Console.WriteLine("{0}). {1} is at {2}",count, monsterName, monster.Position);
+                                            if (monster1.IsRevealed == true) { monsterName = monster1.Name; }
+                                            else { monsterName = "A figure"; }
+                                        
+                                            Console.WriteLine("{0}). {1} is at {2}",count, monsterName, monster1.Position);
                                             count += 1;
                                         }
                                         Int32.TryParse(Console.ReadLine(), out numQuery);
@@ -231,14 +239,7 @@ namespace Supernatural
                                 endProgram = true;
                                 return;
                             }
-                            foreach (Monster monster in gm.Monsters)
-                        {
-                            if (monster.Health < 1)
-                                gm.Dead.Add(monster);
-                        }
-                        foreach (Monster monster in gm.Dead)
-                            gm.Monsters.Remove(monster);
-                        
+                        gm.Monsters.RemoveAll(x => x.Health < 1 && x != gm.Monsters[0]);
                     }
                 }
                 //...............................................................................................................................................................//
