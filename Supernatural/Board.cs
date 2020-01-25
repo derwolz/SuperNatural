@@ -9,6 +9,8 @@ namespace Supernatural
     {
         private List<Tile> _tiles = new List<Tile>();
         public List<Tile> tiles { get { return _tiles; } set { value = _tiles; } }
+        public List<Tile.Places> ResearchAreas = new List<Tile.Places>() { Tile.Places.Church, Tile.Places.Shops, Tile.Places.Bar, Tile.Places.Junkyard };
+        public List<Tile.Places> InvestigationAreas = new List<Tile.Places>() { Tile.Places.Trailer_Home, Tile.Places.Motel, Tile.Places.CityHall, Tile.Places.Library };
         private int BoardSize = Enum.GetValues(typeof(Tile.Places)).Length;
         public Board()
         {

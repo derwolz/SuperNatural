@@ -10,7 +10,12 @@ namespace Supernatural
         public enum Type
         {
             WereWolf,
-            Vampire
+            Vampire,
+            Ghoul,
+            DoppelGanger,
+            Ghosts,
+            Wendigos,
+            Banshees
         }
         public enum AbilityType
         {

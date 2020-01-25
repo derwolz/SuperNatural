@@ -41,8 +41,6 @@ namespace Supernatural
                     //................................................................TurnInitialization...............................................................///
                     //.................................................................................................................................................///
                     string canAttack = "";
-                    string canResearch = "";
-                    string canInvestigate = "";
                     string monsterName = "";
                     bool playercanAttack = false;
                     int cost = 1;
@@ -60,14 +58,13 @@ namespace Supernatural
                             playercanAttack = player.CanAttack(monster.Position, board.GetAdjacentTiles(player.Position));
                             if (playercanAttack && monster.IsActive) canAttack = "(A)ttack";
                         }
-                        bool playercanResearch = (player.Position == Tile.Places.Library || player.Position == Tile.Places.Motel || player.Position == Tile.Places.Trailer_Home || player.Position == Tile.Places.CityHall);
-                        bool playercanInvestigate = (board.GetPanic(player.Position) != Tile.Panic.Level_0);
-                        if (playercanResearch) canResearch = "(R)esearch";
-                        if (playercanInvestigate) canInvestigate = "(I)nvestigate";
+                        string canInvestigate = (board.InvestigationAreas.Contains(player.Position)) ? "(I)nvestigate" : "";
+                        string canSearch = ((board.GetPanic(player.Position) != Tile.Panic.Level_0)) ? "(S)earch" : "";
+                        string canResearch = board.ResearchAreas.Contains(player.Position) ? "(R)esearch" : "";
                         Console.ForegroundColor = player.Color;
                         Console.Write("\n"+player.Name);
                         Console.ResetColor();
-                        Console.WriteLine("'s turn (M)ove {0} {1} {2} (S)kip (U)se Card", canInvestigate, canResearch, canAttack);//.........Display Player Choices.......//
+                        Console.WriteLine("'s turn (M)ove {0} {1} {2} {3} s(K)ip (U)se Card", canSearch,canResearch, canInvestigate, canAttack);//.........Display Player Choices.......//
                         Console.WriteLine("{0} is located at {1}", player.Name, player.Position);//............................show Player Position.......................//
                         foreach (Clue clue in player.ClueHand)
                             Console.WriteLine("{0}", clue.Name);
@@ -98,7 +95,10 @@ namespace Supernatural
                             case "a"://..........................................................................Attack....................................//
                                 int monsterNum = 0;
                                     foreach (Monster monster in gm.Monsters)
-                                        monsterNum += board.GetAdjacentTiles(player.Position).FindAll(x => x == monster.Position).Count;
+                                {
+                                    if (monster.Position == player.Position) monsterNum += 1;
+                                    monsterNum += board.GetAdjacentTiles(player.Position).FindAll(x => x == monster.Position).Count;
+                                }   
                                 if (monsterNum > 0)
                                 {
                                     Console.WriteLine("Attack which monster?");
@@ -119,12 +119,12 @@ namespace Supernatural
                                 
                                     break;
                                 
-                            case "r"://............................................................................Research..............................//
+                            case "i"://............................................................................Investigate..............................//
                                 cost = 1;
                                 int times = 1;
-                                player.ResearchClue(cost, gm, times);
+                                player.InvestigateClue(cost, gm, times);
                                 break;
-                            case "i"://.............................................................................Investigate..........................//
+                            case "s"://.............................................................................Search..........................//
                                 Console.WriteLine("{0} is at {1}", player.Position, board.GetPanic(player.Position));
                                 Console.WriteLine("Do you want to search for clues? (y/n) (level_1 and above)");
                                 strQuery = Console.ReadLine().ToLower();
@@ -137,7 +137,13 @@ namespace Supernatural
                                     board.DecreasePanic(player.Position);
                                     player.DiscardCard();
                                 }
-                                else Console.WriteLine("Nothing to Investigate");
+                                else Console.WriteLine("Nothing to Search");
+                                break;
+                            case "r":
+                                if (board.ResearchAreas.Contains(player.Position))
+                                {
+
+                                }
                                 break;
                             case "u"://.............................................................Use A card..........................................//
                                 count = 1;
@@ -187,7 +193,7 @@ namespace Supernatural
                                             player.Move(board, cost, times);
                                         player.DiscardCard(selectedAction);
                                         break;
-                                    case Action.Type.doubleInvestigate://......................Double Investigate.......................................//
+                                    case Action.Type.doubleSearch://......................Double Search.......................................//
                                         for (int i = 0; i < 2; i++)
                                             if (board.GetPanic(player.Position) != Tile.Panic.Level_0)
                                             {
@@ -197,15 +203,15 @@ namespace Supernatural
                                                 player.DiscardCard(selectedAction);
                                             }
                                         break;
-                                    case Action.Type.doubleResearch://.............................Double Research......................................//
+                                    case Action.Type.doubleInvestigate://.............................Double Investigate......................................//
                                         cost = 0;
                                         times = 2;
-                                        player.ResearchClue(cost, gm, times);
+                                        player.InvestigateClue(cost, gm, times);
                                         player.DiscardCard(selectedAction);
                                         break;
                                 }    
                                 break;
-                            case "s"://....................................................................Skip Turn..............................................//
+                            case "k"://....................................................................Skip Turn..............................................//
                                 endTurn = true;
                                 break;
                             default: break;

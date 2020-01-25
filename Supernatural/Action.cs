@@ -10,8 +10,8 @@ namespace Supernatural
         {
             doubleMove,
             Shotgun,
-            doubleResearch,
             doubleInvestigate,
+            doubleSearch,
             filler,
             Rifle
             

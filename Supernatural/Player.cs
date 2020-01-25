@@ -86,7 +86,7 @@ namespace Supernatural
                 result = true;
             return result;
         }
-        public void ResearchClue(int cost, GameMaster gm, int times)
+        public void InvestigateClue(int cost, GameMaster gm, int times)
         {
             for (int i = 0; i < times; i++)
             {
@@ -105,7 +105,7 @@ namespace Supernatural
                     if (ClueHand[query2 - 1].IsReal) Isreal = "Was a Real Clue!";
                     else Isreal = "Was a fake!";
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine("{0} Researched {1} {2}.", Name, ClueHand[query2 - 1].Name, Isreal);
+                    Console.WriteLine("{0} Investigateed {1} {2}.", Name, ClueHand[query2 - 1].Name, Isreal);
                     Console.ResetColor();
                     if (ClueHand[query2 - 1].IsReal == true)
                         gm.WinCon1.Add(ClueHand[query2 - 1]);
