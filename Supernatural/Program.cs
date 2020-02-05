@@ -26,6 +26,7 @@ namespace Supernatural
                     Console.WriteLine("Pick a name for Player {0}", i + 1);
                     Console.ResetColor();
                     player.Name = Console.ReadLine();
+                    player.Range = 1;
                     game.Players.Add(player);
                 }
 

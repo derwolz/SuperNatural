@@ -61,9 +61,7 @@ namespace Supernatural
                     monster.MaxHealth *= 2;
                     monster.Health = monster.MaxHealth;
                 }
-                    
             }
-                
         }
 
         public void Deal(List<Clue> Hand)
@@ -87,17 +85,6 @@ namespace Supernatural
                 clueDeck.Clues.Add(card);
             return;
         }
-        public void DisplayMonsters()
-        {
-            int count = 0;
-            foreach (Monster monster in Monsters)
-            {
-                count += 1;
-                string monsterName = "";
-                if (monster.IsRevealed == false) monsterName = "Monster";
-                else monsterName = monster.Name;
-                Console.WriteLine("\n{0}) {1} is at {2}", count, monsterName, monster.Position);
-            }
-        }
+        
     }
 }

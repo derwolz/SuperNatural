@@ -13,10 +13,13 @@ namespace Supernatural
         public List<Clue> ClueHand { get { return _ClueHand; } set { value = _ClueHand; } }
         private List<Action> _ActionHand = new List<Action>();
         public List<Action> ActionHand { get { return _ActionHand; } set { value = _ActionHand; } }
+        private List<Weapon.WeaponParts> _WeaponHand = new List<Weapon.WeaponParts>();
+        public List<Weapon.WeaponParts> WeaponHand { get { return _WeaponHand; } set { value = _WeaponHand; } }
         public ActionDeck Deck = new ActionDeck();
         public List<Action> _Discard = new List<Action>();
         public List<Action> Discard { get { return _Discard; } set { value = _Discard; } }
         public ConsoleColor Color { get; set; }
+        public int Range {get; set;}
         public void DrawCard()
         {
             ActionHand.Add(Deck.Actions.First());
@@ -124,8 +127,8 @@ namespace Supernatural
             monster.Health -= damage;
             if (monster.Health < 0)
             {
-                Console.WriteLine("The {0} Falls", monster.Name);
-                monster.IsActive = false;
+                string monsterName = monster.IsRevealed ? monster.Name : "Figure";
+                Console.WriteLine("The {0} Falls", monsterName);
             }
             Console.ResetColor();
             

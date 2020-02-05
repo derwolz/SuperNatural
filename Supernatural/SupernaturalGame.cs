@@ -24,6 +24,7 @@ namespace Supernatural
             Random r = new Random();
             gm.Monsters[0].Position = (Tile.Places)(r.Next(boardNum-Players.Count) + Players.Count);
             gm.Monsters[0].IsActive = true;
+            gm.Monsters[0].IsRevealed = false;
             
             
             
@@ -42,7 +43,6 @@ namespace Supernatural
                     //.................................................................................................................................................///
                     string canAttack = "";
                     string monsterName = "";
-                    bool playercanAttack = false;
                     int cost = 1;
                     bool endTurn = false;
                     int numQuery = 0;//...................................................Reset Variables.................................................................///
@@ -54,10 +54,7 @@ namespace Supernatural
                     
                     {
                         foreach (Monster monster in gm.Monsters)//.............................................Display Start.............................................//
-                        {
-                            playercanAttack = player.CanAttack(monster.Position, board.GetAdjacentTiles(player.Position));
-                            if (playercanAttack && monster.IsActive) canAttack = "(A)ttack";
-                        }
+                            canAttack = GameActions.Target(board,player,gm.Monsters, player.Range).Count > 0 ? "(A)ttack" : "";
                         string canInvestigate = (board.InvestigationAreas.Contains(player.Position)) ? "(I)nvestigate" : "";
                         string canSearch = ((board.GetPanic(player.Position) != Tile.Panic.Level_0)) ? "(S)earch" : "";
                         string canResearch = board.ResearchAreas.Contains(player.Position) ? "(R)esearch" : "";
@@ -93,32 +90,21 @@ namespace Supernatural
                                 player.Move(board, cost);
                                 break;
                             case "a"://..........................................................................Attack....................................//
-                                int monsterNum = 0;
-                                    foreach (Monster monster in gm.Monsters)
-                                {
-                                    if (monster.Position == player.Position) monsterNum += 1;
-                                    monsterNum += board.GetAdjacentTiles(player.Position).FindAll(x => x == monster.Position).Count;
-                                }   
-                                if (monsterNum > 0)
+                                List < Monster > targets = GameActions.Target(board, player, gm.Monsters, player.Range);
+                                
+                                if (targets.Count > 0)
                                 {
                                     Console.WriteLine("Attack which monster?");
-                                    gm.DisplayMonsters();
+                                    GameActions.DisplayMonsters(targets);
                                     Int32.TryParse(Console.ReadLine(), out numQuery);
 
-                                    if (numQuery == 0 || numQuery > monsterNum) numQuery = 1;
+                                    if (numQuery == 0 || numQuery > targets.Count) numQuery = 1;
                                     Monster monster = gm.Monsters[numQuery - 1];
                                     player.Damage(monster, 1);
-                                    if (monster.Health < 0)
-                                    {
-                                        Console.WriteLine("The {0} Falls", monsterName);
-                                        monster.IsActive = false;
-                                    }
                                     Console.ResetColor();
                                     player.DiscardCard();
                                 }
-                                
                                     break;
-                                
                             case "i"://............................................................................Investigate..............................//
                                 cost = 1;
                                 int times = 1;
@@ -140,9 +126,16 @@ namespace Supernatural
                                 else Console.WriteLine("Nothing to Search");
                                 break;
                             case "r":
+                                
                                 if (board.ResearchAreas.Contains(player.Position))
                                 {
-
+                                    Console.WriteLine("(R)esearch or (B)uild a weapon?");
+                                    strQuery = Console.ReadLine().ToLower();
+                                    if (strQuery == "r") ;
+                                    // gm.DealWeapon(player);
+                                    else if (strQuery == "b")
+                                        Console.WriteLine("This will be a list");
+                                    else break;
                                 }
                                 break;
                             case "u"://.............................................................Use A card..........................................//
@@ -159,33 +152,32 @@ namespace Supernatural
                                 switch (selectedAction.Name)
                                 {
                                     case Action.Type.Rifle://.....................................Rifle.................................................//
-                                        List<Monster> rangedMonsters = WeaponAbilities.Rifle(board, player, gm.Monsters);
-                                        count = 1;
-                                        foreach (Monster monster1 in rangedMonsters)
+                                        List<Monster> rifleTargets = GameActions.Target(board, player, gm.Monsters, player.Range + 1);
+                                        if (rifleTargets.Count > 0)
                                         {
-                                            if (monster1.IsRevealed == true) { monsterName = monster1.Name; }
-                                            else { monsterName = "A figure"; }
-                                        
-                                            Console.WriteLine("{0}). {1} is at {2}",count, monsterName, monster1.Position);
-                                            count += 1;
+                                            GameActions.DisplayMonsters(rifleTargets);
+                                            Int32.TryParse(Console.ReadLine(), out numQuery);
+                                            if (numQuery == 0 || numQuery > rifleTargets.Count) numQuery = 1; // default number
+                                            selectedMonster = gm.Monsters[numQuery - 1];
+                                            player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
+                                            player.DiscardCard(selectedAction);
                                         }
-                                        Int32.TryParse(Console.ReadLine(), out numQuery);
-                                        if (numQuery == 0 || numQuery > rangedMonsters.Count)      numQuery = 1; // default number
-                                        selectedMonster = gm.Monsters[numQuery - 1];
-                                        player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
-                                        player.DiscardCard(selectedAction);
+                                        else 
+                                            Console.WriteLine("Nothing to target");
                                         break;
                                     case Action.Type.Shotgun://..................................Shotgun...............................................//
-                                        gm.DisplayMonsters();
-                                        Int32.TryParse(Console.ReadLine(), out numQuery);
-                                        if (numQuery == 0)      numQuery = 1;
+                                        List<Monster> shotgunTarget = GameActions.Target(board, player, gm.Monsters, 0);
+                                        if (shotgunTarget.Count > 0)
+                                        {
+                                            GameActions.DisplayMonsters(shotgunTarget);
+                                            Int32.TryParse(Console.ReadLine(), out numQuery);
+                                            if (numQuery == 0 || numQuery > shotgunTarget.Count) numQuery = 1;
                                             selectedMonster = gm.Monsters[numQuery - 1];
-                                            if (player.Position == selectedMonster.Position)
-                                            {
-                                                player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
-                                                player.DiscardCard(selectedAction);
-                                            }
-                                            break;
+                                            player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
+                                            player.DiscardCard(selectedAction);
+                                        }
+                                        else Console.WriteLine("Nothing to Target");
+                                        break;
                                     case Action.Type.doubleMove://..............................Double Movement..........................................//
                                             Console.WriteLine("{0} sprints",player.Name);
                                             cost = 0;
@@ -202,6 +194,7 @@ namespace Supernatural
                                                 board.DecreasePanic(player.Position);
                                                 player.DiscardCard(selectedAction);
                                             }
+                                            
                                         break;
                                     case Action.Type.doubleInvestigate://.............................Double Investigate......................................//
                                         cost = 0;

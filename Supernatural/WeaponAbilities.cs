@@ -29,5 +29,9 @@ namespace Supernatural
             }
             return result;
         }
+        public static void WoodenSlug(Board board, Player player, List<Monster> monsters)
+        {
+
+        }
     }
 }
