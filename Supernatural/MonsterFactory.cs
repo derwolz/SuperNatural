@@ -8,6 +8,11 @@ namespace Supernatural
     {
         public List<Clue.Type> WerewolfClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Hair, Clue.Type.Bones, Clue.Type.Claw };
         public List<Clue.Type> VampireClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> BansheeClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> DoppelGangerClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> GhostClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> GhoulClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> WendigoClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
         public Monster Factory(Monster.Type name, List<Player> players)
         {
             Monster monster = new Monster();
@@ -35,6 +40,47 @@ namespace Supernatural
                     monster.Abilities.Add(Monster.AbilityType.ExtremePanic);
                     monster.Abilities.Add(Monster.AbilityType.ExtremeSpeed);
                     break;
+                case Monster.Type.Banshees:
+                    foreach (var clue in BansheeClues)
+                        monster.MonsterClues.Add(clue);
+                    foreach (Player player in players)
+                        monster.MaxHealth += 4;
+                    monster.Speed = 2;
+                    monster.Name = "Banshee";
+                    break;
+                case Monster.Type.DoppelGanger:
+                    foreach (var clue in DoppelGangerClues)
+                        monster.MonsterClues.Add(clue);
+                    foreach (Player player in players)
+                        monster.MaxHealth += 6;
+                    monster.Speed = 2;
+                    monster.Name = "DoppelGanger";
+                    break;
+                case Monster.Type.Ghosts:
+                    foreach (var clue in GhostClues)
+                        monster.MonsterClues.Add(clue);
+                    foreach (Player player in players)
+                        monster.MaxHealth += 5;
+                    monster.Speed = 3;
+                    monster.Name = "Ghost";
+                    break;
+                case Monster.Type.Ghoul:
+                    foreach (var clue in GhoulClues)
+                        monster.MonsterClues.Add(clue);
+                    foreach (Player player in players)
+                        monster.MaxHealth += 6;
+                    monster.Speed = 3;
+                    monster.Name = "Ghoul";
+                    break;
+                case Monster.Type.Wendigos:
+                    foreach (var clue in WendigoClues)
+                        monster.MonsterClues.Add(clue);
+                    foreach (Player player in players)
+                        monster.MaxHealth += 6;
+                    monster.Speed = 4;
+                    monster.Name = "Wendigo";
+                    break;
+
             }
             if (players.Count > 2)
                 monster.Speed += 1;

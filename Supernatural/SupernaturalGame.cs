@@ -17,7 +17,7 @@ namespace Supernatural
             Monster Initialmonster = new Monster();
             MonsterFactory factory = new MonsterFactory();
             Random random = new Random();
-            int rand = random.Next(0,monsNum-1);
+            int rand = random.Next(monsNum);
             Monster.Type mType = (Monster.Type)rand;
             Initialmonster = factory.Factory(mType, Players);
             GameMaster gm = new GameMaster(Initialmonster);
