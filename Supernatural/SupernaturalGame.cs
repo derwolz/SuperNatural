@@ -58,10 +58,11 @@ namespace Supernatural
                         string canInvestigate = (board.InvestigationAreas.Contains(player.Position)) ? "(I)nvestigate" : "";
                         string canSearch = ((board.GetPanic(player.Position) != Tile.Panic.Level_0)) ? "(S)earch" : "";
                         string canResearch = board.ResearchAreas.Contains(player.Position) ? "(R)esearch" : "";
+                        string canWeapon = player.Weapons.Count > 0 ? "Use (W)eapon" : "";
                         Console.ForegroundColor = player.Color;
                         Console.Write("\n"+player.Name);
                         Console.ResetColor();
-                        Console.WriteLine("'s turn (M)ove {0} {1} {2} {3} s(K)ip (U)se Card", canSearch,canResearch, canInvestigate, canAttack);//.........Display Player Choices.......//
+                        Console.WriteLine("'s turn (M)ove {0} {1} {2} {3} {4} s(K)ip (U)se Card", canSearch,canResearch, canInvestigate, canAttack, canWeapon);//.........Display Player Choices.......//
                         Console.WriteLine("{0} is located at {1}", player.Name, player.Position);//............................show Player Position.......................//
                         foreach (Clue clue in player.ClueHand)
                             Console.WriteLine("{0}", clue.Name);
@@ -99,7 +100,7 @@ namespace Supernatural
                                     Int32.TryParse(Console.ReadLine(), out numQuery);
 
                                     if (numQuery == 0 || numQuery > targets.Count) numQuery = 1;
-                                    Monster monster = gm.Monsters[numQuery - 1];
+                                    Monster monster = targets[numQuery - 1];
                                     player.Damage(monster, 1);
                                     Console.ResetColor();
                                     player.DiscardCard();
@@ -158,7 +159,7 @@ namespace Supernatural
                                             GameActions.DisplayMonsters(rifleTargets);
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
                                             if (numQuery == 0 || numQuery > rifleTargets.Count) numQuery = 1; // default number
-                                            selectedMonster = gm.Monsters[numQuery - 1];
+                                            selectedMonster = rifleTargets[numQuery - 1];
                                             player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
                                             player.DiscardCard(selectedAction);
                                         }
@@ -172,7 +173,7 @@ namespace Supernatural
                                             GameActions.DisplayMonsters(shotgunTarget);
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
                                             if (numQuery == 0 || numQuery > shotgunTarget.Count) numQuery = 1;
-                                            selectedMonster = gm.Monsters[numQuery - 1];
+                                            selectedMonster = shotgunTarget[numQuery - 1];
                                             player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
                                             player.DiscardCard(selectedAction);
                                         }
@@ -204,6 +205,44 @@ namespace Supernatural
                                         break;
                                 }    
                                 break;
+                            case "w":
+                                count = 0;
+                                if (player.Weapons.Count > 0)
+                                {
+                                    Console.WriteLine("Use which weapon?");
+                                    foreach (Weapon.WeaponName weapon in player.Weapons)
+                                    {
+                                        count += 1;
+                                        Console.WriteLine("{0}). {1}", count, weapon.ToString());
+                                    }
+                                    if (Int32.TryParse(Console.ReadLine(), out numQuery))
+                                    {
+                                        if (numQuery < 0 || numQuery > player.Weapons.Count) numQuery = 1;
+                                        switch (player.Weapons[numQuery - 1])
+                                        {
+                                            case Weapon.WeaponName.Bear_Trap:
+                                                break;
+                                            case Weapon.WeaponName.Holy_Water:
+                                                break;
+                                            case Weapon.WeaponName.Silver_Bird_Shot:
+                                                break;
+                                            case Weapon.WeaponName.Wooden_Slug:
+                                                List<Monster> Woodslugtargets = GameActions.Target(board, player, gm.Monsters, player.Range);
+                                                GameActions.DisplayMonsters(Woodslugtargets);
+                                                if (Int32.TryParse(Console.ReadLine(), out numQuery))
+                                                {
+                                                    if (numQuery < 1 || numQuery > Woodslugtargets.Count) numQuery = 1;
+                                                    WeaponAbilities.WoodenSlug(player, Woodslugtargets[numQuery - 1]);
+                                                }
+                                                    
+                                                break;
+                                        }
+
+                                    }
+                                }
+                                break;
+
+                                        
                             case "k"://....................................................................Skip Turn..............................................//
                                 endTurn = true;
                                 break;

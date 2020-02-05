@@ -15,6 +15,8 @@ namespace Supernatural
         public List<Action> ActionHand { get { return _ActionHand; } set { value = _ActionHand; } }
         private List<Weapon.WeaponParts> _WeaponHand = new List<Weapon.WeaponParts>();
         public List<Weapon.WeaponParts> WeaponHand { get { return _WeaponHand; } set { value = _WeaponHand; } }
+        private List<Weapon.WeaponName> _Weapons = new List<Weapon.WeaponName>();
+        public List<Weapon.WeaponName> Weapons { get { return _Weapons; } set { value = _Weapons; } }
         public ActionDeck Deck = new ActionDeck();
         public List<Action> _Discard = new List<Action>();
         public List<Action> Discard { get { return _Discard; } set { value = _Discard; } }

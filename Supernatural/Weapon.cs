@@ -18,8 +18,13 @@ namespace Supernatural
             Small_Silver_Pellets,
             Blessed_Shotgun_Casing,
             Propellant
-
-
+        }
+        public enum WeaponName
+        {
+            Holy_Water,
+            Bear_Trap,
+            Silver_Bird_Shot,
+            Wooden_Slug
         }
         public static List<WeaponParts> HolyWater = new List<WeaponParts>() { WeaponParts.Holy_Vial, WeaponParts.Purified_Water, WeaponParts.Sacred_Blessing, WeaponParts.Sacred_Blessing };
         public static List<WeaponParts> BearTrap = new List<WeaponParts>() { WeaponParts.Wooden_Stake, WeaponParts.Large_Metal_Parts, WeaponParts.Spring_set };
