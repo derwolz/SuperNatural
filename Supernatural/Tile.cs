@@ -7,6 +7,9 @@ namespace Supernatural
 {
     public class Tile
     {
+        /// <summary>
+        /// Tiles are the Areas on the board itself, each is named and carries a Panic value
+        /// </summary>
         public enum Places
         {
             Baker_Street,

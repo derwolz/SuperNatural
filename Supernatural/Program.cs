@@ -10,7 +10,7 @@ namespace Supernatural
             Game game = new SupernaturalGame();
             Console.WriteLine("How Many Players? Max 4");
             Int32.TryParse(Console.ReadLine(), out int numquery);
-            if (numquery == 0 || numquery > 4)
+            if (numquery < 1 || numquery > 4) // Check to see if number is in range
             {
                 Console.WriteLine("Number was out of range or non-number. Exiting");
                 game.endProgram = true;
@@ -18,7 +18,7 @@ namespace Supernatural
             else
             {
                 
-                for (int i = 0; i < numquery; i++)
+                for (int i = 0; i < numquery; i++) // Character Creation
                 {
                     Player player = new Player();
                     player.Color = (ConsoleColor)(2+i * 3);

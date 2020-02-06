@@ -6,6 +6,7 @@ namespace Supernatural
 {
     public class Clue
     {
+        //List of clues with a value of validity
         public enum Type
         {
             Claw, Blood,

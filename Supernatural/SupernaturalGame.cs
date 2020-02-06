@@ -98,8 +98,7 @@ namespace Supernatural
                                     Console.WriteLine("Attack which monster?");
                                     GameActions.DisplayMonsters(targets);
                                     Int32.TryParse(Console.ReadLine(), out numQuery);
-
-                                    if (numQuery == 0 || numQuery > targets.Count) numQuery = 1;
+                                    if (numQuery < 1 || numQuery > targets.Count) numQuery = 1;
                                     Monster monster = targets[numQuery - 1];
                                     player.Damage(monster, 1);
                                     Console.ResetColor();
@@ -147,7 +146,7 @@ namespace Supernatural
                                     count += 1;
                                 }
                                 Int32.TryParse(Console.ReadLine(), out numQuery);
-                                if (numQuery == 0) break;
+                                if (numQuery < 1) break;
                                 Action selectedAction = player.ActionHand[numQuery - 1];
                                 Monster selectedMonster = null;
                                 switch (selectedAction.Name)
@@ -158,7 +157,7 @@ namespace Supernatural
                                         {
                                             GameActions.DisplayMonsters(rifleTargets);
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
-                                            if (numQuery == 0 || numQuery > rifleTargets.Count) numQuery = 1; // default number
+                                            if (numQuery < 1 || numQuery > rifleTargets.Count) numQuery = 1; // default number
                                             selectedMonster = rifleTargets[numQuery - 1];
                                             player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
                                             player.DiscardCard(selectedAction);
@@ -172,7 +171,7 @@ namespace Supernatural
                                         {
                                             GameActions.DisplayMonsters(shotgunTarget);
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
-                                            if (numQuery == 0 || numQuery > shotgunTarget.Count) numQuery = 1;
+                                            if (numQuery < 1 || numQuery > shotgunTarget.Count) numQuery = 1;
                                             selectedMonster = shotgunTarget[numQuery - 1];
                                             player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
                                             player.DiscardCard(selectedAction);
@@ -248,7 +247,7 @@ namespace Supernatural
                                 break;
                             default: break;
                         }
-                        if (player.ActionHand.Count == 0)
+                        if (player.ActionHand.Count < 1)
                             endTurn = true;
                         //.........................................................................................................................................//
                         //......................................................End Player Turn Sequence...........................................................//
@@ -312,7 +311,7 @@ namespace Supernatural
                     {
                         monster.CountDown = r.Next(monster.CountDown);
 
-                        if (monster.CountDown == 0)
+                        if (monster.CountDown < 1)
                         {
                             monster.IsActive = true;
                             monster.Health = monster.MaxHealth;

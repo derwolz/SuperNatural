@@ -9,6 +9,9 @@ namespace Supernatural
     {
         public Tile.Places Position { get; set; }
         public string Name { get; set; }
+        //...................................................................................
+        //...............................Start Player Hands..................................
+        //...................................................................................
         private List<Clue> _ClueHand = new List<Clue>();
         public List<Clue> ClueHand { get { return _ClueHand; } set { value = _ClueHand; } }
         private List<Action> _ActionHand = new List<Action>();
@@ -17,17 +20,21 @@ namespace Supernatural
         public List<Weapon.WeaponParts> WeaponHand { get { return _WeaponHand; } set { value = _WeaponHand; } }
         private List<Weapon.WeaponName> _Weapons = new List<Weapon.WeaponName>();
         public List<Weapon.WeaponName> Weapons { get { return _Weapons; } set { value = _Weapons; } }
+        //............................Action Deck to store Action Cards......................
+        //............Action Cards determine how many actions a player may take in a round...
         public ActionDeck Deck = new ActionDeck();
+        //.............Discard for temporary Card storage to remove them from play...........
         public List<Action> _Discard = new List<Action>();
         public List<Action> Discard { get { return _Discard; } set { value = _Discard; } }
-        public ConsoleColor Color { get; set; }
-        public int Range {get; set;}
-        public void DrawCard()
+        public ConsoleColor Color { get; set; } //Player Color on the Console................
+        public int Range {get; set;} //Self explanatory weapon range
+        //.............................Begin Functions.......................................
+        public void DrawCard() //....................Draw action cards.......................
         {
-            ActionHand.Add(Deck.Actions.First());
+            ActionHand.Add(Deck.Actions.First()); 
             Deck.Actions.RemoveAt(0);
         }
-        public void DiscardCard()
+        public void DiscardCard() //...............Discard Action cards......................
         {
             int count = 1;
             Console.WriteLine("Choose a card to Discard");
@@ -38,22 +45,18 @@ namespace Supernatural
                 count += 1;
             }
             Int32.TryParse(Console.ReadLine(), out int query2);
-            
-            if (query2 == 0)
-            {
-                Console.WriteLine("Incorrect Input, Discarding first card.");
-                query2 = 1;
-            }
+            //Instead of backing out, which is difficult, it assumes the first card will be dropped
+            if (query2 < 1 || query2 > ActionHand.Count) query2 = 1;
             Discard.Add(ActionHand[query2-1]);
             ActionHand.RemoveAt(query2 - 1);
         }
-        public void DiscardCard(Action card)
+        public void DiscardCard(Action card) //base method to discard card....................
         {
             Discard.Add(card);
             ActionHand.Remove(card);
             Shuffle(1);
         }
-        public void Reshuffle()
+        public void Reshuffle() //Reshuffles Action Card deck by adding discard to it........
         {
             Random r = new Random();
             for (int i = 0; i < Discard.Count; i++)
@@ -64,7 +67,7 @@ namespace Supernatural
             Shuffle();
         }
         
-        public void Shuffle(int times = 1)
+        public void Shuffle(int times = 1) //Shuffles the action deck........................
         {
             Random r = new Random();
             List<Action> _tempList = new List<Action>();
@@ -80,6 +83,7 @@ namespace Supernatural
             return;
         }
         public bool CanAttack(Tile.Places _tile, List<Tile.Places> tiles)
+            // outdated ranging method Use GameActions.Target() instead
         {
             bool result = false;
             foreach (var tile in tiles)
@@ -91,7 +95,7 @@ namespace Supernatural
                 result = true;
             return result;
         }
-        public void InvestigateClue(int cost, GameMaster gm, int times)
+        public void InvestigateClue(int cost, GameMaster gm, int times)//removes clue from players hand and adds it to the list of found cluese
         {
             for (int i = 0; i < times; i++)
             {
@@ -122,7 +126,7 @@ namespace Supernatural
             }
             return;
         }
-        public void Damage(Monster monster, int damage)
+        public void Damage(Monster monster, int damage) // damages the monster
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("{0} Takes a shot with the shotgun and strikes the figure dealing {1} damage.", Name, damage);
@@ -135,7 +139,9 @@ namespace Supernatural
             Console.ResetColor();
             
         }
-        public void Move(Board board, int cost, int times = 1)
+        public void Move(Board board, int cost, int times = 1) 
+            // Move a player This action is shared by the monster in theory, 
+            //but the ability for the player to choose is why it is seperate
         {
             for (int i = 0; i < times; i++)
             {

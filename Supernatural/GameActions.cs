@@ -7,7 +7,13 @@ namespace Supernatural
 {
     public static class GameActions
     {
+        /// <summary>
+        /// Global Actions are placed here that can be used by all players / make the game logic easier to 
+        /// work through.
+        /// </summary>
+
         public static List<Monster> Target(Board board, Player player, List<Monster> monsters, int range = 1)
+            //returns all monsters within a certain distance
         {
             List<Monster> result = new List<Monster>();
 
@@ -31,9 +37,10 @@ namespace Supernatural
                     if (monster.Position == place)
                         result.Add(monster);
                 }
-            return result.Distinct().ToList(); ;
+            return result.Distinct().ToList(); //ensures no duplicates
         }
         public static void DisplayMonsters(List<Monster> monsters)
+            //displays all monsters in the specified list, often used in conjunction with target
         {
             int count = 0;
             foreach (Monster monster in monsters)

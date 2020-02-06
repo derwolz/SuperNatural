@@ -6,7 +6,7 @@ namespace Supernatural
 {
     public class Monster
     {
-        public Tile.Places Position { get; set; }
+        public Tile.Places Position { get; set; } // monster's position
         public enum Type
         {
             WereWolf,
@@ -31,11 +31,13 @@ namespace Supernatural
         public bool IsActive { get; set; }
         public int Health { get; set; }
         public int MaxHealth { get; set; }
-        public int CountDown { get; set; }
-        public int MaxCountDown { get; set; }
+        public int CountDown { get; set; } // determines how long a monster stays hidden
+        public int MaxCountDown { get; set; } // used to limit how long a monster can stay hidden
         public int Speed { get; set; }
+        //List of Abilities a monster is capable of using
         private List<AbilityType> _abilities = new List<AbilityType>();
         public List<AbilityType> Abilities { get { return _abilities; } set { value = _abilities; } }
+        //Necessary clues required to find the identity of the monster
 
         public List<Clue.Type> _MonsterClues = new List<Clue.Type>();
         public List<Clue.Type> MonsterClues { get {return _MonsterClues; } set { value = _MonsterClues; } }
@@ -44,7 +46,7 @@ namespace Supernatural
             this.CountDown = 3;
             this.MaxCountDown = 3;
         }
-        public void Move(List<Tile.Places> _list,List< Player> Players)
+        public void Move(List<Tile.Places> _list,List< Player> Players) // moves the monster
         {
             Random r = new Random();
             List < Tile.Places > _tempList = new List<Tile.Places>();
@@ -52,7 +54,7 @@ namespace Supernatural
                 _tempList.Add(path);
             foreach (var path in _list)
             {
-                foreach (Player player in Players)
+                foreach (Player player in Players) // Ensures the monster moves away from the players
                 {
                     if (player.Position.ToString() == path.ToString())
                         _tempList.Remove(path);
@@ -62,6 +64,7 @@ namespace Supernatural
             Position = _tempList[monsterMoveChoice];
         }
         public AbilityType SelectAbility()
+            //selects an ability that the monster will use
         {
             Random r = new Random();
             AbilityType result;
@@ -69,14 +72,8 @@ namespace Supernatural
             return result;
         }
         public void UseAbility(Board board, List<Player> players, GameMaster gm)
+            //Enacts the ability
         {
-            List<Tile.Places> enemyAdjacent = new List<Tile.Places>();
-            foreach (Player player in players)
-            {
-                List<Tile.Places> _list = board.GetAdjacentTiles(player.Position);
-                foreach (Tile.Places name in _list)
-                    enemyAdjacent.Add(name);
-            }
             List<Tile.Places> adjacent = board.GetAdjacentTiles(Position);
             switch (SelectAbility())
             {
@@ -93,7 +90,7 @@ namespace Supernatural
                     MonsterAbilities.SummonBats(board, gm);
                     
                     break;
-                case AbilityType.None:
+                case AbilityType.None: //default value, ensures no bugs
                     break;
             }
             

@@ -6,6 +6,7 @@ namespace Supernatural
 {
     public class MonsterFactory
     {
+        //each Monster has its own list of clues assigned to it here
         public List<Clue.Type> WerewolfClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Hair, Clue.Type.Bones, Clue.Type.Claw };
         public List<Clue.Type> VampireClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
         public List<Clue.Type> BansheeClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
@@ -20,13 +21,13 @@ namespace Supernatural
             switch (name)
             {
                 case Monster.Type.Vampire:
-                    foreach (var clue in VampireClues)
+                    foreach (var clue in VampireClues) // the clues are added to the monster here for clue deck checking
                         monster.MonsterClues.Add(clue);
                     foreach (Player player in players)
-                        monster.MaxHealth += 8;
+                        monster.MaxHealth += 8; // Variable health to ensure Difficulty
                     monster.Speed = 2;
                     monster.Name = "Vampire";
-                    monster.Abilities.Add(Monster.AbilityType.SummonBats);
+                    monster.Abilities.Add(Monster.AbilityType.SummonBats);//monster abilities added here
                     monster.Abilities.Add(Monster.AbilityType.Vampirism);
                     
                     break;
@@ -40,7 +41,7 @@ namespace Supernatural
                     monster.Abilities.Add(Monster.AbilityType.ExtremePanic);
                     monster.Abilities.Add(Monster.AbilityType.ExtremeSpeed);
                     break;
-                case Monster.Type.Banshees:
+                case Monster.Type.Banshees://Monsters here and below have no abilities currently
                     foreach (var clue in BansheeClues)
                         monster.MonsterClues.Add(clue);
                     foreach (Player player in players)
@@ -82,7 +83,7 @@ namespace Supernatural
                     break;
 
             }
-            if (players.Count > 2)
+            if (players.Count > 2)//Variable speed to ensure difficulty
                 monster.Speed += 1;
             monster.Health = monster.MaxHealth;
             return monster;

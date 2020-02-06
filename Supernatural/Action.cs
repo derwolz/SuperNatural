@@ -6,6 +6,7 @@ namespace Supernatural
 {
     public class Action
     {
+        //List of available actions the action deck is made out of
         public enum Type
         {
             doubleMove,

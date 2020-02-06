@@ -6,6 +6,9 @@ namespace Supernatural
 {
     public class ClueDeck
     {
+        /// <summary>
+        /// Instantiates a clue deck adding the necessary clues a monster needs to be found out
+        /// </summary>
         private List<Clue> _Clues = new List<Clue>();
         public List<Clue> Clues { get { return _Clues; } set { value = _Clues; } }
         public ClueDeck(Monster monster)

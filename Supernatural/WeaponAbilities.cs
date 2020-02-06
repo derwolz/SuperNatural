@@ -6,9 +6,11 @@ namespace Supernatural
 {
     public static class WeaponAbilities
     {
+        //................................Weapon damage set..............................
         public static int ShotgunDamage = 3;
         public static int RifleDamage = 1;
         
+        //..................................Start individual Abilities...................
         public static void WoodenSlug(Player player, Monster monster)
         {
             int damage;

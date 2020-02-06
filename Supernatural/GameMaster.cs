@@ -7,7 +7,10 @@ namespace Supernatural
 {
     public class GameMaster
     {
+        //public pool for the players to draw from, as opposed to the action decks there will be a deck of
+        //research cards instantiated here as well
         public ClueDeck clueDeck { get; set; }
+        //Variabls that determine the phase of the game and whether the players win/lose
         public bool IsMonsterRevealed {get; set;}
         private List<Clue> _WinCon1 = new List<Clue>();
         public List<Clue> WinCon1 { get { return _WinCon1; } set { value = _WinCon1; } }
@@ -19,12 +22,16 @@ namespace Supernatural
             Monsters.Add(monster);
             
         }
+        //monsters kept track of here
         private List<Monster> _Monsters = new List<Monster>();
         public List<Monster> Monsters { get { return _Monsters; } set { value = _Monsters; } }
+        //summoned monsters is a temporary list that stops summons from moving immediately and 
+        //gets around the nasty can't modify a list you are currently iterating through
         private List<Monster> _Summoned = new List<Monster>();
         public List<Monster> Summoned { get { return _Summoned; } set { value = _Summoned; } }
         
-        public bool CheckWinCon(Monster monster, bool LoseCon)
+        public bool CheckWinCon(Monster monster, bool LoseCon) 
+            //player wins if monsters health drops below 0 and they haven't lost
         {
             if (monster.Health < 0 && monster.IsRevealed == true && !LoseCon)
             {
@@ -33,6 +40,7 @@ namespace Supernatural
             else return false;
         }
         public bool CheckLoseCon(Board board)
+            //player loses if Level 4 panic is reached on at least half of the areas
         {
             int count = 0;
             foreach (Tile tile in board.tiles)
@@ -42,6 +50,7 @@ namespace Supernatural
             else return false;
         }
         public void RevealMonster(Monster monster)
+            //This will reveal the monster if the players have gathered enough clues
         {
             int TrueCheck = 0;
             foreach (Clue clue in WinCon1)
@@ -65,12 +74,14 @@ namespace Supernatural
         }
 
         public void Deal(List<Clue> Hand)
+            //Deals a clue Card
         {
             Hand.Add(clueDeck.Clues.First());
             clueDeck.Clues.RemoveAt(0);
         }
 
         public void Shuffle(int times = 1)
+            //Shuffles clue deck -- this and previous need different names for when the Weapon card is here
         {
             Random r = new Random();
             List<Clue> _tempList = new List<Clue>();

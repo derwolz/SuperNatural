@@ -6,6 +6,10 @@ namespace Supernatural
 {
     public class ActionDeck
     {
+        /// <summary>
+        /// Action Deck makes up extra actions that a player can do during their turn
+        /// but also is the action economy of that player
+        /// </summary>
         private List<Action> _Actions = new List<Action>();
         public List<Action> Actions { get { return _Actions; } set { value = _Actions; } }
         public ActionDeck()

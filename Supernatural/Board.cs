@@ -11,13 +11,17 @@ namespace Supernatural
         public List<Tile> tiles { get { return _tiles; } set { value = _tiles; } }
         public List<Tile.Places> ResearchAreas = new List<Tile.Places>() { Tile.Places.Church, Tile.Places.Shops, Tile.Places.Bar, Tile.Places.Junkyard };
         public List<Tile.Places> InvestigationAreas = new List<Tile.Places>() { Tile.Places.Trailer_Home, Tile.Places.Motel, Tile.Places.CityHall, Tile.Places.Library };
-        private int BoardSize = Enum.GetValues(typeof(Tile.Places)).Length;
+        //............This determines the size of the board...............................
+        private int BoardSize = Enum.GetValues(typeof(Tile.Places)).Length; 
         public Board()
         {
             for (int i = 0; i < BoardSize; i++)
             {
                 Tile tile = new Tile();
-                tile.Name = (Tile.Places)i;
+                tile.Name = (Tile.Places)i;//casts value i to a tiles name value
+                //.................................................................................
+                //.......This Creates the path relationships on the Board..........................
+                //.................................................................................
                 if (i > 0)
                     tile.AdjacentPaths.Add((Tile.Places)(i - 1));
                 if (i < BoardSize-1)
@@ -43,6 +47,7 @@ namespace Supernatural
             
         }
         public List<Tile.Places> GetAdjacentTiles(Tile.Places position)
+            //returns a list of adjacent tiles to the selected tile
         {
             List<Tile.Places> result;
             foreach (Tile tile in tiles)
@@ -54,6 +59,7 @@ namespace Supernatural
             throw new Exception();
         }
         public Tile.Panic GetPanic(Tile.Places position)
+            //returns the panic level of the specified tile
         {
             Tile.Panic result;
             foreach (Tile tile in tiles)
@@ -65,6 +71,7 @@ namespace Supernatural
             throw new Exception();
         }
         public void IncreasePanic(Tile.Places position)
+            //increases the panic level of the specified tile
         {
             foreach (Tile tile in tiles)
                 if (tile.Name == position)
@@ -89,6 +96,7 @@ namespace Supernatural
                 }
         }
         public void DecreasePanic(Tile.Places position)
+            //decreases the panic level of the specified tile
         {
             foreach (Tile tile in tiles)
                 if (tile.Name == position)
