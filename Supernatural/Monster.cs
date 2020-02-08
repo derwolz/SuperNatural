@@ -40,6 +40,7 @@ namespace Supernatural
         public int MaxHealth { get; set; }
         public int CountDown { get; set; } // determines how long a monster stays hidden
         public int MaxCountDown { get; set; } // used to limit how long a monster can stay hidden
+        public bool isStunned { get; set; }
         
         //List of Abilities a monster is capable of using
         private List<AbilityType> _abilities = new List<AbilityType>();
@@ -53,6 +54,7 @@ namespace Supernatural
         {
             this.CountDown = 3;
             this.MaxCountDown = 3;
+            this.isStunned = false;
             
         }
         public void Move(List<Tile.Places> _list,List< Player> Players) // moves the monster

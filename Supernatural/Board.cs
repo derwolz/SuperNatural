@@ -130,8 +130,11 @@ namespace Supernatural
             foreach (var tile in Tiles)
                 if (place == tile.Name)
                 {
-                    WeaponAbilities.ActivateTraps(tile.PlacedWeapons, monster, monsters, board);
-                    return true;
+                    if (tile.PlacedWeapons.Count > 0)
+                    {
+                        WeaponAbilities.ActivateTraps(tile.PlacedWeapons, monster, monsters, board);
+                        return true;
+                    }
                 }
             return false;
         }

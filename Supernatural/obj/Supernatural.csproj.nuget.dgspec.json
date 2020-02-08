@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Dr Sam Hyde\\source\\repos\\SuperNatural\\Supernatural\\Supernatural.csproj": {}
+    "C:\\Users\\Dr Sam Hyde\\source\\repos\\Supernatural\\Supernatural\\Supernatural.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Dr Sam Hyde\\source\\repos\\SuperNatural\\Supernatural\\Supernatural.csproj": {
+    "C:\\Users\\Dr Sam Hyde\\source\\repos\\Supernatural\\Supernatural\\Supernatural.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Dr Sam Hyde\\source\\repos\\SuperNatural\\Supernatural\\Supernatural.csproj",
+        "projectUniqueName": "C:\\Users\\Dr Sam Hyde\\source\\repos\\Supernatural\\Supernatural\\Supernatural.csproj",
         "projectName": "Supernatural",
-        "projectPath": "C:\\Users\\Dr Sam Hyde\\source\\repos\\SuperNatural\\Supernatural\\Supernatural.csproj",
+        "projectPath": "C:\\Users\\Dr Sam Hyde\\source\\repos\\Supernatural\\Supernatural\\Supernatural.csproj",
         "packagesPath": "C:\\Users\\Dr Sam Hyde\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Dr Sam Hyde\\source\\repos\\SuperNatural\\Supernatural\\obj\\",
+        "outputPath": "C:\\Users\\Dr Sam Hyde\\source\\repos\\Supernatural\\Supernatural\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"

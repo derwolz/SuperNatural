@@ -63,7 +63,13 @@ namespace Supernatural
             if (monster.Health < 0)
                 Console.WriteLine("The {0} Falls", monsterName);
             Console.ResetColor();
-
+        }
+        public static Monster GetTarget(List<Monster> monsters)
+        {
+            Int32.TryParse(Console.ReadLine(), out int numQuery);
+            if (numQuery < 1 || numQuery > monsters.Count) numQuery = 1;
+            Monster selectedMonster = monsters[numQuery - 1];
+            return selectedMonster;
         }
     }
 }

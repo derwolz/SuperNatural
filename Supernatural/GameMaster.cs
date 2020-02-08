@@ -10,6 +10,7 @@ namespace Supernatural
         //public pool for the players to draw from, as opposed to the action decks there will be a deck of
         //research cards instantiated here as well
         public ClueDeck clueDeck { get; set; }
+        public WeaponDeck weaponDeck { get; set; }
         //Variabls that determine the phase of the game and whether the players win/lose
         public bool IsMonsterRevealed {get; set;}
         private List<Clue> _WinCon1 = new List<Clue>();
@@ -17,6 +18,7 @@ namespace Supernatural
         public GameMaster(Monster monster)
         {
             this.clueDeck = new ClueDeck(monster);
+            this.weaponDeck = new WeaponDeck();
             IsMonsterRevealed = false;
             
             Monsters.Add(monster);
@@ -76,11 +78,37 @@ namespace Supernatural
         public void Deal(List<Clue> Hand)
             //Deals a clue Card
         {
-            Hand.Add(clueDeck.Clues.First());
-            clueDeck.Clues.RemoveAt(0);
+            if (clueDeck.Clues.Count >= 0)
+            {
+                Hand.Add(clueDeck.Clues.First());
+                clueDeck.Clues.RemoveAt(0);
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("There are no more clues to be found!");
+                Console.ResetColor();
+            }
+                
+        }
+        public void Deal(List<Weapon.WeaponParts> Hand, int times = 3)
+        {
+            if (weaponDeck.Deck.Count > 0)
+            {
+                for (int i = 0; i < times; i++)
+                {
+                    Console.WriteLine("{0}). {1}", i+1, weaponDeck.Deck.First().ToString());
+                    Hand.Add(weaponDeck.Deck.First());
+                    weaponDeck.Deck.RemoveAt(0);
+                }
+                Int32.TryParse(Console.ReadLine(), out int numQuery);
+                if (numQuery < 1 || numQuery > times) numQuery = 1;
+                Hand.RemoveAt(Hand.Count - times + numQuery - 1);
+            }
+            else Console.WriteLine("There are no more parts to work with");
         }
 
-        public void Shuffle(int times = 1)
+        public void Shuffle(int times = 4)
             //Shuffles clue deck -- this and previous need different names for when the Weapon card is here
         {
             Random r = new Random();
@@ -94,6 +122,16 @@ namespace Supernatural
                 }
             foreach (Clue card in _tempList)
                 clueDeck.Clues.Add(card);
+            List<Weapon.WeaponParts> _tempList2 = new List<Weapon.WeaponParts>();
+            for (int j = 0; j < times; j++)
+                for (int i = 0; i < weaponDeck.Deck.Count; i++)
+                {
+                    int x = r.Next(weaponDeck.Deck.Count);
+                    _tempList2.Add(weaponDeck.Deck[x]);
+                    weaponDeck.Deck.RemoveAt(x);
+                }
+            foreach (Weapon.WeaponParts weapon in _tempList2)
+                weaponDeck.Deck.Add(weapon);
             return;
         }
         

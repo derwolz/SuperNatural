@@ -16,8 +16,8 @@ namespace Supernatural
         public List<Action> ActionHand { get { return _ActionHand; } set { value = _ActionHand; } }
         private List<Weapon.WeaponParts> _WeaponHand = new List<Weapon.WeaponParts>();
         public List<Weapon.WeaponParts> WeaponHand { get { return _WeaponHand; } set { value = _WeaponHand; } }
-        private List<Weapon.WeaponName> _Weapons = new List<Weapon.WeaponName>();
-        public List<Weapon.WeaponName> Weapons { get { return _Weapons; } set { value = _Weapons; } }
+        private List<Weapon> _Weapons = new List<Weapon>();
+        public List<Weapon> Weapons { get { return _Weapons; } set { value = _Weapons; } }
         //............................Action Deck to store Action Cards......................
         //............Action Cards determine how many actions a player may take in a round...
         public ActionDeck Deck = new ActionDeck();
@@ -152,6 +152,29 @@ namespace Supernatural
                 }
             }
                 return;
+        }
+        public void ConsumeWeapon(Weapon.WeaponName weaponName)
+            //decreases Uses until weapon no longer has any, then removes the weapon
+        {
+            Weapon _temp = null;
+            foreach(var weapon in Weapons)
+            {
+                if (weapon.Name == weaponName)
+                    if (weapon.Uses > 0)
+                    {
+                        weapon.Uses -= 1;
+                        Console.WriteLine("{0} has {1} uses left", weapon.Name, weapon.Uses);
+                    }
+                    else
+                    {
+                        Console.WriteLine("{0} is used up", weapon.Name);
+                        _temp = weapon;
+                    }
+            }
+            if (_temp != null)
+            {
+                Weapons.Remove(_temp);
+            }
         }
     }
 }

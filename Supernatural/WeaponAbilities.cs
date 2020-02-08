@@ -9,9 +9,10 @@ namespace Supernatural
         //................................Weapon damage set..............................
         public static int ShotgunDamage = 3;
         public static int RifleDamage = 1;
-        
+        public static int StunDamage = 1;
+
         //..................................Start individual Abilities...................
-        public static void WoodenSlug(Player player, Monster monster)
+        public static void WoodenSlug(Monster monster)
         {
             int damage;
             if (monster.Name == "Vampire")
@@ -19,11 +20,10 @@ namespace Supernatural
             else damage = 2;
             GameActions.Damage(monster,Weapon.WeaponName.Wooden_Slug.ToString(), damage);
         }
-        public static void BearTrap(Monster monster)
+        public static void StunGrenade(Monster monster)
         {
-            monster.Speed = 0;
-            int damage = 2;
-            GameActions.Damage(monster, Weapon.WeaponName.Bear_Trap.ToString(), damage) ;
+            monster.isStunned = true;
+            GameActions.Damage(monster, Weapon.WeaponName.Stun_Grenade.ToString(), StunDamage) ;
         }
         public static void HolyWater(Monster monster)
         {
@@ -56,8 +56,8 @@ namespace Supernatural
                 foreach (var weapon in weapons)
                     switch (weapon.Name)
                     {
-                        case Weapon.WeaponName.Bear_Trap:
-                            BearTrap(monster);
+                        case Weapon.WeaponName.Stun_Grenade:
+                            StunGrenade(monster);
                             break;
                         case Weapon.WeaponName.Holy_Water:
                             HolyWater(monster);
@@ -65,11 +65,37 @@ namespace Supernatural
                         case Weapon.WeaponName.Silver_Bird_Shot:
                             SilverBirdShot(board, monsters, monster);
                             break;
+                        case Weapon.WeaponName.Wooden_Slug:
+                            WoodenSlug(monster);
+                            break;
                         default:
                             return;
                     }
             }
             else return;
+        }
+        public static bool PlaceTrap(Board board, Player player)
+        {
+            Weapon _temp = player.Weapons.Find(x => x.Name == Weapon.WeaponName.Trap_Kit);
+            player.Weapons.Remove(_temp);
+            bool isSuccess = false;
+            Console.WriteLine("Place which weapon as a trap?");
+            for (int i = 0; i < player.Weapons.Count; i++)
+            {
+                Console.WriteLine("{0}). {1}", i + 1, player.Weapons[i].Name.ToString());
+            }
+            if (Int32.TryParse(Console.ReadLine(), out int numQuery))
+            {
+                if (numQuery < 1 || numQuery > player.Weapons.Count - 1)
+                    if (player.Weapons[numQuery - 1].Name != Weapon.WeaponName.Trap_Kit)
+                    {
+                        board.PlaceWeapon(player.Position, player.Weapons[numQuery - 1]);
+                        isSuccess = true;
+                    }
+            }
+            if (!isSuccess) player.Weapons.Add(_temp);
+            return isSuccess;
+            
         }
     }
 }

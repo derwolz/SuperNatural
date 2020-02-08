@@ -43,13 +43,13 @@ namespace Supernatural
                     Console.WriteLine("Answer was in the wrong format");
                     return;
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Oops Something Broke!");
-                    Console.ResetColor();
-                    return;
-                }
+                //catch (ArgumentOutOfRangeException)
+                //{
+                //    Console.BackgroundColor = ConsoleColor.Red;
+                //    Console.WriteLine("Your answer landed the system out of bounds");
+                //    Console.ResetColor();
+                //    return;
+                //}
                 
             }
             
