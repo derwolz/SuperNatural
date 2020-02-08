@@ -46,5 +46,7 @@ namespace Supernatural
 
         public Places Name { get; set; }
         public Panic panic { get; set; }
+        private List<Weapon> _Weapons = new List<Weapon>();
+        public List<Weapon> PlacedWeapons { get { return _Weapons; } set { value = _Weapons; } }
     }
 }

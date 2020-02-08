@@ -54,5 +54,16 @@ namespace Supernatural
             }
             return;
         }
+        public static void Damage(Monster monster, String name, int damage) // damages the monster
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            string monsterName = monster.IsRevealed ? monster.Name : "Figure";
+            Console.WriteLine("{0} deals {1} damage to {2}", name, damage, monsterName);
+            monster.Health -= damage;
+            if (monster.Health < 0)
+                Console.WriteLine("The {0} Falls", monsterName);
+            Console.ResetColor();
+
+        }
     }
 }

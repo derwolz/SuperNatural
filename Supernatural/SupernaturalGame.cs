@@ -13,7 +13,8 @@ namespace Supernatural
         {
             Board board = new Board();
             int boardNum = Enum.GetValues(typeof(Tile.Places)).Length;
-            int monsNum = Enum.GetValues(typeof(Monster.Type)).Length;
+            //int monsNum = Enum.GetValues(typeof(Monster.Type)).Length;
+            int monsNum = 1;
             Monster Initialmonster = new Monster();
             MonsterFactory factory = new MonsterFactory();
             Random random = new Random();
@@ -100,7 +101,7 @@ namespace Supernatural
                                     Int32.TryParse(Console.ReadLine(), out numQuery);
                                     if (numQuery < 1 || numQuery > targets.Count) numQuery = 1;
                                     Monster monster = targets[numQuery - 1];
-                                    player.Damage(monster, 1);
+                                    GameActions.Damage(monster,player.Name, 1);
                                     Console.ResetColor();
                                     player.DiscardCard();
                                 }
@@ -159,7 +160,7 @@ namespace Supernatural
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
                                             if (numQuery < 1 || numQuery > rifleTargets.Count) numQuery = 1; // default number
                                             selectedMonster = rifleTargets[numQuery - 1];
-                                            player.Damage(selectedMonster, WeaponAbilities.RifleDamage);
+                                            GameActions.Damage(selectedMonster,player.Name, WeaponAbilities.RifleDamage);
                                             player.DiscardCard(selectedAction);
                                         }
                                         else 
@@ -173,7 +174,7 @@ namespace Supernatural
                                             Int32.TryParse(Console.ReadLine(), out numQuery);
                                             if (numQuery < 1 || numQuery > shotgunTarget.Count) numQuery = 1;
                                             selectedMonster = shotgunTarget[numQuery - 1];
-                                            player.Damage(selectedMonster, WeaponAbilities.ShotgunDamage);
+                                            GameActions.Damage(selectedMonster,player.Name, WeaponAbilities.ShotgunDamage);
                                             player.DiscardCard(selectedAction);
                                         }
                                         else Console.WriteLine("Nothing to Target");
@@ -298,12 +299,15 @@ namespace Supernatural
                         for (int move = monster.Speed; move > 0; move--)
                         {
                             monster.Move(board.GetAdjacentTiles(monster.Position), Players);
+                             if (board.springTrap(monster.Position, monster,gm.Monsters,board))
+                                move = monster.Speed;
                             board.IncreasePanic(monster.Position);
                             Console.WriteLine("A commotion is heard coming from {0}", monster.Position);
                         }
                         Console.ResetColor();
                         if (monster.IsRevealed)
                         {
+
                             monster.UseAbility(board, Players, gm);
                         }
                     }

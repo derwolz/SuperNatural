@@ -43,10 +43,10 @@ namespace Supernatural
             //player loses if Level 4 panic is reached on at least half of the areas
         {
             int count = 0;
-            foreach (Tile tile in board.tiles)
+            foreach (Tile tile in board.Tiles)
                 if (board.GetPanic(tile.Name) == Tile.Panic.Level_4)
                     count += 1;
-            if (count > (board.tiles.Count / 2)) return true;
+            if (count > (board.Tiles.Count / 2)) return true;
             else return false;
         }
         public void RevealMonster(Monster monster)

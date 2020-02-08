@@ -11,6 +11,7 @@ namespace Supernatural
         /// but it requires that a monster has the enum of the ablity in order to use them.
         /// Stored seperately for ease of reading
         /// </summary>
+        
         public static void SummonBats(Board board, GameMaster gm) //summons up to 4 bats in surrounding areas
         {
             int count = 0;

@@ -8,7 +8,7 @@ namespace Supernatural
     public class Board
     {
         private List<Tile> _tiles = new List<Tile>();
-        public List<Tile> tiles { get { return _tiles; } set { value = _tiles; } }
+        public List<Tile> Tiles { get { return _tiles; } set { value = _tiles; } }
         public List<Tile.Places> ResearchAreas = new List<Tile.Places>() { Tile.Places.Church, Tile.Places.Shops, Tile.Places.Bar, Tile.Places.Junkyard };
         public List<Tile.Places> InvestigationAreas = new List<Tile.Places>() { Tile.Places.Trailer_Home, Tile.Places.Motel, Tile.Places.CityHall, Tile.Places.Library };
         //............This determines the size of the board...............................
@@ -42,7 +42,7 @@ namespace Supernatural
                     tile.AdjacentPaths.Add((Tile.Places)(i + 8));
                 if (i == 17)
                     tile.AdjacentPaths.Add((Tile.Places)(i - 8));
-                tiles.Add(tile);
+                Tiles.Add(tile);
             }
             
         }
@@ -50,7 +50,7 @@ namespace Supernatural
             //returns a list of adjacent tiles to the selected tile
         {
             List<Tile.Places> result;
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
                 if (tile.Name == position)
                 {
                     result = tile.AdjacentPaths;
@@ -62,7 +62,7 @@ namespace Supernatural
             //returns the panic level of the specified tile
         {
             Tile.Panic result;
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
                 if (tile.Name == position)
                 {
                     result = tile.panic;
@@ -73,7 +73,7 @@ namespace Supernatural
         public void IncreasePanic(Tile.Places position)
             //increases the panic level of the specified tile
         {
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
                 if (tile.Name == position)
                 {
                     switch (tile.panic) {
@@ -98,7 +98,7 @@ namespace Supernatural
         public void DecreasePanic(Tile.Places position)
             //decreases the panic level of the specified tile
         {
-            foreach (Tile tile in tiles)
+            foreach (Tile tile in Tiles)
                 if (tile.Name == position)
                 {
                     switch (tile.panic)
@@ -117,6 +117,23 @@ namespace Supernatural
                     }
                     return;
                 }
+        }
+        public void PlaceWeapon(Tile.Places place, Weapon weapon)
+            //Places a weapon at a specified tile
+        {
+            foreach (var tile in Tiles)
+                if (tile.Name == place)
+                    tile.PlacedWeapons.Add(weapon);
+        }
+        public bool springTrap(Tile.Places place, Monster monster, List<Monster> monsters, Board board)
+        {
+            foreach (var tile in Tiles)
+                if (place == tile.Name)
+                {
+                    WeaponAbilities.ActivateTraps(tile.PlacedWeapons, monster, monsters, board);
+                    return true;
+                }
+            return false;
         }
     }
 }

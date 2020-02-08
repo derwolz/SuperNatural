@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Supernatural
 {
-    public static class Weapon
+    public class Weapon
     {
         public enum WeaponParts
         {
@@ -28,10 +28,11 @@ namespace Supernatural
         }
         //List of possible combinations make up weapons, Research will check against this when building a weapon
         //to produce a list of viable builds
-        public static List<WeaponParts> HolyWater = new List<WeaponParts>() { WeaponParts.Holy_Vial, WeaponParts.Purified_Water, WeaponParts.Sacred_Blessing, WeaponParts.Sacred_Blessing };
-        public static List<WeaponParts> BearTrap = new List<WeaponParts>() { WeaponParts.Wooden_Stake, WeaponParts.Large_Metal_Parts, WeaponParts.Spring_set };
-        public static List<WeaponParts> SilverBirdShot = new List<WeaponParts>() { WeaponParts.Blessed_Shotgun_Casing, WeaponParts.Small_Silver_Pellets, WeaponParts.Propellant };
-        public static List<WeaponParts> WoodenSlug = new List<WeaponParts>() { WeaponParts.Propellant, WeaponParts.Wooden_Stake, WeaponParts.Blessed_Shotgun_Casing };
+        public WeaponName Name { get; set; }
+        public void UseAbility(Board board, Player player, Monster monster)
+        {
+
+        }
 
     }
 }

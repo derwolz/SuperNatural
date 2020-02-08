@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace Supernatural
 {
-    public class Player
+    public class Player : Actor
     {
-        public Tile.Places Position { get; set; }
-        public string Name { get; set; }
         //...................................................................................
         //...............................Start Player Hands..................................
         //...................................................................................
@@ -27,7 +25,6 @@ namespace Supernatural
         public List<Action> _Discard = new List<Action>();
         public List<Action> Discard { get { return _Discard; } set { value = _Discard; } }
         public ConsoleColor Color { get; set; } //Player Color on the Console................
-        public int Range {get; set;} //Self explanatory weapon range
         //.............................Begin Functions.......................................
         public void DrawCard() //....................Draw action cards.......................
         {
@@ -95,7 +92,8 @@ namespace Supernatural
                 result = true;
             return result;
         }
-        public void InvestigateClue(int cost, GameMaster gm, int times)//removes clue from players hand and adds it to the list of found cluese
+        public void InvestigateClue(int cost, GameMaster gm, int times)
+            //removes clue from players hand and adds it to the list of found cluese
         {
             for (int i = 0; i < times; i++)
             {
@@ -126,22 +124,9 @@ namespace Supernatural
             }
             return;
         }
-        public void Damage(Monster monster, int damage) // damages the monster
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("{0} Takes a shot with the shotgun and strikes the figure dealing {1} damage.", Name, damage);
-            monster.Health -= damage;
-            if (monster.Health < 0)
-            {
-                string monsterName = monster.IsRevealed ? monster.Name : "Figure";
-                Console.WriteLine("The {0} Falls", monsterName);
-            }
-            Console.ResetColor();
-            
-        }
         public void Move(Board board, int cost, int times = 1) 
-            // Move a player This action is shared by the monster in theory, 
-            //but the ability for the player to choose is why it is seperate
+            
+            // Move a player This action is shared by the monster in theory, but the ability for the player to choose is why it is seperate
         {
             for (int i = 0; i < times; i++)
             {
