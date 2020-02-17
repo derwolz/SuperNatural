@@ -5,4 +5,32 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Action.cs" />
+    <Compile Remove="ActionDeck.cs" />
+    <Compile Remove="Actor.cs" />
+    <Compile Remove="Board.cs" />
+    <Compile Remove="Clue.cs" />
+    <Compile Remove="ClueDeck.cs" />
+    <Compile Remove="Game.cs" />
+    <Compile Remove="GameActions.cs" />
+    <Compile Remove="GameMaster.cs" />
+    <Compile Remove="Monster.cs" />
+    <Compile Remove="MonsterAbilities.cs" />
+    <Compile Remove="MonsterFactory.cs" />
+    <Compile Remove="Player.cs" />
+    <Compile Remove="SupernaturalGame.cs" />
+    <Compile Remove="Tile.cs" />
+    <Compile Remove="Weapon.cs" />
+    <Compile Remove="WeaponAbilities.cs" />
+    <Compile Remove="WeaponDeck.cs" />
+    <Compile Remove="WeaponFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SuperNaturalLibrary">
+      <HintPath>..\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

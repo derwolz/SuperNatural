@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperNaturalLibrary", "SuperNaturalLibrary\SuperNaturalLibrary.csproj", "{58E4E9EA-B4F1-45E4-B70A-681A9DC715ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58E4E9EA-B4F1-45E4-B70A-681A9DC715ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58E4E9EA-B4F1-45E4-B70A-681A9DC715ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58E4E9EA-B4F1-45E4-B70A-681A9DC715ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58E4E9EA-B4F1-45E4-B70A-681A9DC715ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B937E0C6-81FC-4722-959B-50181A53229B}
+	EndGlobalSection
+EndGlobal

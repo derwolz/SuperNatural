@@ -9,3 +9,6 @@ C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp
 C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.AssemblyInfo.cs
 C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.dll
 C:\Users\Dr Sam Hyde\source\repos\Supernatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.pdb
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\Supernatural\bin\Debug\netcoreapp3.1\SuperNaturalLibrary.dll
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\Supernatural\bin\Debug\netcoreapp3.1\SuperNaturalLibrary.pdb
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\Supernatural\obj\Debug\netcoreapp3.1\Supernatural.csproj.CopyComplete

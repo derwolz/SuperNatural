@@ -1,0 +1,16 @@
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.deps.json
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.dll
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.pdb
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.csprojAssemblyReference.cache
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.AssemblyInfoInputs.cache
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.AssemblyInfo.cs
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.dll
+C:\Users\Dr Sam Hyde\source\repos\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.pdb
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.deps.json
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.dll
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\bin\Debug\netstandard2.0\SuperNaturalLibrary.pdb
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.csprojAssemblyReference.cache
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.AssemblyInfoInputs.cache
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.AssemblyInfo.cs
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.dll
+C:\Users\Dr Sam Hyde\source\repos\SuperNatural\SuperNaturalLibrary\SuperNaturalLibrary\obj\Debug\netstandard2.0\SuperNaturalLibrary.pdb

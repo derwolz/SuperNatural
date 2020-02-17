@@ -1,5 +1,5 @@
 ﻿using System;
-
+using SupernaturalLibrary;
 namespace Supernatural
 {
     class Program
