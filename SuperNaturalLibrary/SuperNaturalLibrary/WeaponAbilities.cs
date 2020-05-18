@@ -8,7 +8,7 @@ namespace SupernaturalLibrary
     {
         //................................Weapon damage set..............................
         public static int ShotgunDamage = 3;
-        public static int RifleDamage = 1;
+        public static int RifleDamage = 7;
         public static int StunDamage = 1;
 
         //..................................Start individual Abilities...................
@@ -44,10 +44,6 @@ namespace SupernaturalLibrary
                     }
                 }
         }
-        public static void RigTrap(Board board, Weapon weapon, Tile.Places place)
-        {
-            board.PlaceWeapon(place, weapon);
-        }
         public static void ActivateTraps(List<Weapon> weapons, Monster monster, List<Monster> monsters, Board board)
         {
             if (weapons.Count > 0)
@@ -81,9 +77,7 @@ namespace SupernaturalLibrary
             bool isSuccess = false;
             Console.WriteLine("Place which weapon as a trap?");
             for (int i = 0; i < player.Weapons.Count; i++)
-            {
                 Console.WriteLine("{0}). {1}", i + 1, player.Weapons[i].Name.ToString());
-            }
             if (Int32.TryParse(Console.ReadLine(), out int numQuery))
             {
                 if (numQuery < 1 || numQuery > player.Weapons.Count - 1)
@@ -95,7 +89,6 @@ namespace SupernaturalLibrary
             }
             if (!isSuccess) player.Weapons.Add(_temp);
             return isSuccess;
-            
         }
     }
 }

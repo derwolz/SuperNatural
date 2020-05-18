@@ -20,7 +20,7 @@ namespace SupernaturalLibrary
             WeaponFactory Weapfactory = new WeaponFactory();
             Random random = new Random();
             int rand = random.Next(monsNum);
-            Monster.Type mType = (Monster.Type)rand;
+            Monster.Type mType = (Monster.Type)1;// rand;
             Initialmonster = factory.Factory(mType, Players);
             GameMaster gm = new GameMaster(Initialmonster);
             Random r = new Random();
@@ -33,7 +33,7 @@ namespace SupernaturalLibrary
                 player.Position = Tile.Places.Junkyard;
                 player.Shuffle();
             }
-            gm.Shuffle();
+            //gm.Shuffle();
             while (!playing)
             {
                 
@@ -303,7 +303,8 @@ namespace SupernaturalLibrary
                                 endProgram = true;
                                 return;
                             }
-                        gm.Monsters.RemoveAll(x => x.Health < 1 && x != gm.Monsters[0]);
+                        gm.Monsters.RemoveAll(x => x.Health < 1 && x != gm.Monsters[0]
+                      );
                     }
                 }
                 //...............................................................................................................................................................//
@@ -349,6 +350,7 @@ namespace SupernaturalLibrary
                         }
                         Console.ResetColor();
                     }
+                    Console.WriteLine(monster.Health);
                 }
                 foreach (Monster monster in gm.Summoned)
                     gm.Monsters.Add(monster);

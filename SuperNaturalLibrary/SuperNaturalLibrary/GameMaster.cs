@@ -66,6 +66,7 @@ namespace SupernaturalLibrary
                 monster.IsRevealed = true;
                 if (monster.IsRevealed == true)
                 {
+                    WinCon1.RemoveAll(x => x.IsReal == true); // empties win hand, forcing this to only be true once
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("The Mysterious Figure is revealed to be a {0}", monster.Name);
                     Console.ResetColor();

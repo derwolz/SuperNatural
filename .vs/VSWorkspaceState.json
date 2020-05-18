@@ -2,8 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Supernatural",
-    "\\SuperNaturalLibrary"
+    "\\SuperNaturalLibrary",
+    "\\SuperNaturalLibrary\\SuperNaturalLibrary"
   ],
-  "SelectedNode": "\\Supernatural.sln",
+  "SelectedNode": "\\SuperNaturalLibrary\\SuperNaturalLibrary\\SupernaturalGame.cs",
   "PreviewInSolutionExplorer": false
 }

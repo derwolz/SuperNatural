@@ -15,18 +15,11 @@ namespace SupernaturalLibrary
         public static void SummonBats(Board board, GameMaster gm) //summons up to 4 bats in surrounding areas
         {
             int count = 0;
-            List<Monster> result = new List<Monster>();
             Console.ForegroundColor = ConsoleColor.Red;
             foreach (Tile.Places tile in board.GetAdjacentTiles(gm.Monsters[0].Position))
             {
-                
-                Monster monster = new Monster();
-                monster.Name = "Bat";
-                monster.Health = 1;
-                monster.Speed = 1;
-                monster.IsActive = true;
-                monster.IsRevealed = true;
-                monster.Abilities.Add(Monster.AbilityType.None);
+                MonsterFactory factory = new MonsterFactory();
+                Monster monster = factory.Factory(Monster.Type.Bat);
                 monster.Position = tile;
                 gm.Summoned.Add(monster);
                 count += 1;

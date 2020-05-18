@@ -15,15 +15,24 @@ namespace SupernaturalLibrary
             DoppelGanger,
             Ghosts,
             Wendigos,
-            Banshees
+            Banshees,
+            Bat
         }
         public enum AbilityType
         {
-            Vampirism = 9,
-            SummonBats = 10,
-            ExtremeSpeed = 5,
-            ExtremePanic = 7,
-            None = 4
+            Vampirism,
+            SummonBats,
+            ExtremeSpeed,
+            ExtremePanic,
+            None
+        }
+        private enum AbilityTier 
+        {
+            Tier_0 = 40,
+            Tier_1 = 35,
+            Tier_2 = 28,
+            Tier_3 = 22,
+            Tier_4 = 16
         }
         public enum SubTypes
         {
@@ -49,7 +58,7 @@ namespace SupernaturalLibrary
 
         public List<Clue.Type> _MonsterClues = new List<Clue.Type>();
         public List<Clue.Type> MonsterClues { get {return _MonsterClues; } set { value = _MonsterClues; } }
-        public double CastSpeed { get; set; }
+        public int CastSpeed { get; set; }
         public Monster()
         {
             this.CountDown = 3;
@@ -77,12 +86,12 @@ namespace SupernaturalLibrary
         public AbilityType SelectAbility()
             //selects an ability that the monster will use
         {
-            if (CastSpeed > 1)
+            if (CastSpeed > 100)
             {
-                CastSpeed -= 1;
                 Random r = new Random();
                 AbilityType result;
                 result = Abilities[r.Next(Abilities.Count)];
+                CastSpeed -= 100;
                 return result;
             }
             else return AbilityType.None;
@@ -96,23 +105,23 @@ namespace SupernaturalLibrary
             {
                 case AbilityType.ExtremePanic:
                     MonsterAbilities.ExtremePanic(board, this);
-                    CastSpeed += (players.Count / (int)AbilityType.ExtremePanic);
+                    CastSpeed += (int)AbilityTier.Tier_2;
                     break;
                 case AbilityType.ExtremeSpeed:
                     MonsterAbilities.ExtremeSpeed(board, this, players);
-                    CastSpeed += (players.Count / (int)AbilityType.ExtremeSpeed);
+                    CastSpeed += (int)AbilityTier.Tier_1;
                     break;
                 case AbilityType.Vampirism:
                     MonsterAbilities.Vampirism(board,this,players);
-                    CastSpeed += (players.Count / (int)(AbilityType.Vampirism));
+                    CastSpeed += (int)AbilityTier.Tier_3;
                     break;
                 case AbilityType.SummonBats:
                     MonsterAbilities.SummonBats(board, gm);
-                    CastSpeed += (players.Count / (int)AbilityType.SummonBats);
+                    CastSpeed += (int)AbilityTier.Tier_4;
 
                     break;
                 case AbilityType.None: //default value, ensures no bugs
-                    CastSpeed += (players.Count / (int)AbilityType.None); ;
+                    CastSpeed += (int)AbilityTier.Tier_0;
                     break;
             }
             

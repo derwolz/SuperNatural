@@ -7,14 +7,21 @@ namespace SupernaturalLibrary
     public class MonsterFactory
     {
         //each Monster has its own list of clues assigned to it here
-        public List<Clue.Type> WerewolfClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Hair, Clue.Type.Bones, Clue.Type.Claw };
-        public List<Clue.Type> VampireClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public List<Clue.Type> BansheeClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public List<Clue.Type> DoppelGangerClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public List<Clue.Type> GhostClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public List<Clue.Type> GhoulClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public List<Clue.Type> WendigoClues = new List<Clue.Type>() { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
-        public Monster Factory(Monster.Type name, List<Player> players)
+        public List<Clue.Type> WerewolfClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Hair, Clue.Type.Bones, Clue.Type.Claw };
+        public List<Clue.Type> VampireClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> BansheeClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> DoppelGangerClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> GhostClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> GhoulClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public List<Clue.Type> WendigoClues = new List<Clue.Type>() 
+        { Clue.Type.Blood, Clue.Type.Arcane_Symbols, Clue.Type.Cold_Air, Clue.Type.Broken_Holy_Symbols };
+        public Monster Factory(Monster.Type name, List<Player> players = null)
         {
             Monster monster = new Monster();
             monster.MaxHealth = 0;
@@ -81,9 +88,18 @@ namespace SupernaturalLibrary
                     monster.Speed = 4;
                     monster.Name = "Wendigo";
                     break;
+                case Monster.Type.Bat:
+                    monster.Name = "Bat";
+                    monster.MaxHealth = 1;
+                    monster.Speed = 1;
+                    monster.IsActive = true;
+                    monster.IsRevealed = true;
+                    monster.Abilities.Add(Monster.AbilityType.None);
+                    
+                    break;
 
             }
-            if (players.Count > 2)//Variable speed to ensure difficulty
+            if (players != null && players.Count > 2)//Variable speed to ensure difficulty
                 monster.Speed += 1;
             monster.Health = monster.MaxHealth;
             return monster;
