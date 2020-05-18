@@ -7,7 +7,8 @@
  Monsters when revealed have special abilities to make the game more unique
  This section is for techincal explanation of code
  
- ## Application executable located in Supernatural\bin\Debug\netcoreapp3.1\Supernatural.exe
+ ## Application executable located in 
+ Supernatural\bin\Debug\netcoreapp3.1\Supernatural.exe
  
  # Start Up
  ## Board
